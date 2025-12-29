@@ -41,7 +41,20 @@
 <body>
     <div class="container">
         <div class="form-section">
-            <h2>Rebill - Invoice Generator</h2>
+            <div class="header-row">
+                <h2>Rebill - Invoice Generator <a href="https://github.com/maheshrijal/rebill" target="_blank"
+                        rel="noopener" class="open-source-badge">Open Source</a></h2>
+                <button type="button" id="historyToggle" class="ghost">📋 History</button>
+            </div>
+            <div id="historyPanel" class="history-panel" style="display: none;">
+                <div class="history-header">
+                    <h3>Invoice History</h3>
+                    <button type="button" id="clearHistoryBtn" class="ghost small">Clear All</button>
+                </div>
+                <div id="historyList" class="history-list">
+                    <p class="history-empty">No invoices saved yet. Generate a bill to save it here.</p>
+                </div>
+            </div>
             <form id="billForm" autocomplete="off">
                 <div class="form-block">
                     <h3>Seller</h3>
@@ -106,7 +119,11 @@
                         </div>
                         <div class="form-group">
                             <label for="invoiceNumber">Invoice Number</label>
-                            <input type="text" id="invoiceNumber" value="18" required>
+                            <div class="number-input-wrapper">
+                                <button type="button" class="number-btn decrement" id="decrementInvoice">−</button>
+                                <input type="text" id="invoiceNumber" value="18" required>
+                                <button type="button" class="number-btn increment" id="incrementInvoice">+</button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="currencyCode">Currency Code</label>
@@ -172,13 +189,14 @@
                     <div class="form-group">
                         <label for="jsonData">Invoice JSON</label>
                         <textarea id="jsonData" rows="6"
-                            placeholder="Paste invoice JSON here to import, or export to copy it."></textarea>
+                            placeholder="Paste JSON here or drag & drop a .json file to import."></textarea>
                     </div>
                     <div class="button-row">
                         <button type="button" id="exportJsonBtn" class="ghost">Export JSON</button>
                         <button type="button" id="downloadJsonBtn" class="secondary">Download JSON</button>
                         <button type="button" id="importJsonBtn" class="secondary">Import JSON</button>
-                        <input type="file" id="importFile" accept="application/json">
+                        <label for="importFile" class="file-input-label">📎 Choose File</label>
+                        <input type="file" id="importFile" accept="application/json" class="visually-hidden">
                     </div>
                 </div>
 
