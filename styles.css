@@ -686,6 +686,45 @@ button:focus-visible {
     background: var(--gray-100);
 }
 
+/* ===== Invoice Placeholder ===== */
+.invoice-placeholder {
+    background: linear-gradient(135deg, var(--primary-50) 0%, #f0f4ff 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-8);
+}
+
+.placeholder-content {
+    max-width: 320px;
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+    opacity: 0.6;
+}
+
+.placeholder-content h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.placeholder-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.placeholder-content strong {
+    color: var(--primary-600);
+}
+
 /* ===== Invoice Preview Section ===== */
 .invoice-section {
     background: white;

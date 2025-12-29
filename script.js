@@ -432,6 +432,7 @@ function renderInvoice(data) {
     setText('displayNotesHeading', invoice.notes || 'Thank you for your business');
     setText('displayInstructions', invoice.instructions || '');
 
+    document.getElementById('invoicePlaceholder').style.display = 'none';
     document.getElementById('invoice').style.display = 'block';
     document.getElementById('downloadBtn').style.display = 'inline-block';
 }
@@ -461,6 +462,13 @@ function deepMerge(target, source) {
     // Dangerous keys that could lead to prototype pollution
     const UNSAFE_KEYS = ['__proto__', 'constructor', 'prototype'];
 
+    function hasUnsafeKeys(obj, visited = new Set()) {
+        if (!obj || typeof obj !== 'object' || visited.has(obj)) return false;
+        visited.add(obj);
+        return UNSAFE_KEYS.some(k => k in obj) ||
+            Object.values(obj).some(v => v && typeof v === 'object' && hasUnsafeKeys(v, visited));
+    }
+
     Object.keys(source).forEach((key) => {
         // Skip prototype pollution vectors
         if (UNSAFE_KEYS.includes(key)) return;
@@ -470,11 +478,7 @@ function deepMerge(target, source) {
         if (Array.isArray(value)) {
             target[key] = value.slice();
         } else if (value && typeof value === 'object') {
-            // Validate nested object doesn't have unsafe keys before recursing
-            if (UNSAFE_KEYS.some(k => k in value)) {
-                // Skip this object entirely if it contains unsafe keys
-                return;
-            }
+            if (hasUnsafeKeys(value)) return;
             if (!target[key] || typeof target[key] !== 'object') {
                 target[key] = {};
             }
@@ -771,6 +775,7 @@ function resetDraft() {
 
     localStorage.removeItem(STORAGE_KEY);
     document.getElementById('invoice').style.display = 'none';
+    document.getElementById('invoicePlaceholder').style.display = 'flex';
     document.getElementById('downloadBtn').style.display = 'none';
     setValue('jsonData', '');
 
