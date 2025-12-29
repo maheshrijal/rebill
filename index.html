@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Rebill - Invoice Generator</title>
+    <meta name="description"
+        content="Create professional invoices for free. Open-source, privacy-first invoice generator with PDF export, auto-save, and no sign-up required.">
+    <meta name="keywords" content="invoice generator, free invoice, bill maker, PDF invoice, open source invoicing">
+    <meta name="author" content="Mahesh Rijal">
+    <link rel="canonical" href="https://rebill.mrjl.dev/">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rebill.mrjl.dev/">
+    <meta property="og:title" content="Rebill - Invoice Generator">
+    <meta property="og:description"
+        content="Create professional invoices for free. Open-source, privacy-first, no sign-up required.">
+    <meta property="og:site_name" content="Rebill">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Rebill - Invoice Generator">
+    <meta name="twitter:description"
+        content="Create professional invoices for free. Open-source, privacy-first, no sign-up required.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧾%3C/text%3E%3C/svg%3E">
+
+    <!-- Styles & Scripts -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h2>Rebill - Invoice Generator</h2>
+            <form id="billForm" autocomplete="off">
+                <div class="form-block">
+                    <h3>Seller</h3>
+                    <div class="form-grid">
+                        <div class="form-group span-2">
+                            <label for="sellerName">Seller Name</label>
+                            <input type="text" id="sellerName" value="" placeholder="Your Business Name" required>
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="sellerAddress">Seller Address</label>
+                            <textarea id="sellerAddress" rows="3" placeholder="123 Business Street&#10;City, State ZIP"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="sellerEmail">Seller Email</label>
+                            <input type="email" id="sellerEmail" value="" placeholder="you@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="sellerPhone">Seller Phone</label>
+                            <input type="text" id="sellerPhone" value="" placeholder="+1 234 567 8900">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <h3>Bill To</h3>
+                    <div class="form-grid">
+                        <div class="form-group span-2">
+                            <label for="billToName">Customer Name</label>
+                            <input type="text" id="billToName" value="" placeholder="Customer or Company Name" required>
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="billToAddress">Customer Address</label>
+                            <textarea id="billToAddress" rows="3" placeholder="456 Customer Ave&#10;City, State ZIP"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="billToEmail">Customer Email</label>
+                            <input type="email" id="billToEmail" value="" placeholder="customer@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="billToPhone">Customer Phone</label>
+                            <input type="text" id="billToPhone" value="" placeholder="+1 987 654 3210">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <h3>Invoice Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group span-2">
+                            <label for="invoiceTitle">Invoice Title</label>
+                            <input type="text" id="invoiceTitle" value="INVOICE">
+                        </div>
+                        <div class="form-group">
+                            <label for="invoiceDate">Invoice Date</label>
+                            <input type="date" id="invoiceDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="invoiceDueDate">Due Date</label>
+                            <input type="date" id="invoiceDueDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="invoiceNumber">Invoice Number</label>
+                            <input type="text" id="invoiceNumber" value="18" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="currencyCode">Currency Code</label>
+                            <input type="text" id="currencyCode" list="currencyOptions" value="INR">
+                            <datalist id="currencyOptions">
+                                <option value="INR"></option>
+                                <option value="USD"></option>
+                                <option value="EUR"></option>
+                                <option value="GBP"></option>
+                                <option value="AUD"></option>
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <h3>Line Items</h3>
+                    <div class="items-header">
+                        <span>Description</span>
+                        <span>Qty</span>
+                        <span>Unit Price</span>
+                        <span>Total</span>
+                        <span></span>
+                    </div>
+                    <div id="itemsContainer"></div>
+                    <button type="button" id="addItemBtn" class="ghost">Add Line Item</button>
+                </div>
+
+                <div class="form-block">
+                    <h3>Totals</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="taxRate">Tax Rate (%)</label>
+                            <input type="number" id="taxRate" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="discountAmount">Discount</label>
+                            <input type="number" id="discountAmount" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="totals-preview">
+                        <p><strong>Subtotal:</strong> <span id="formSubtotal">0.00</span></p>
+                        <p><strong>Tax:</strong> <span id="formTaxAmount">0.00</span></p>
+                        <p><strong>Total:</strong> <span id="formTotal">0.00</span></p>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <h3>Notes & Terms</h3>
+                    <div class="form-group">
+                        <label for="invoiceNotes">Notes</label>
+                        <textarea id="invoiceNotes" rows="2" placeholder="Thank you for your business"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoiceInstructions">Custom Instructions</label>
+                        <textarea id="invoiceInstructions" rows="3"
+                            placeholder="Payment instructions, bank details, terms, etc."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <h3>Import / Export</h3>
+                    <div class="form-group">
+                        <label for="jsonData">Invoice JSON</label>
+                        <textarea id="jsonData" rows="6"
+                            placeholder="Paste invoice JSON here to import, or export to copy it."></textarea>
+                    </div>
+                    <div class="button-row">
+                        <button type="button" id="exportJsonBtn" class="ghost">Export JSON</button>
+                        <button type="button" id="downloadJsonBtn" class="secondary">Download JSON</button>
+                        <button type="button" id="importJsonBtn" class="secondary">Import JSON</button>
+                        <input type="file" id="importFile" accept="application/json">
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button type="button" class="primary" onclick="generateBill()">Generate Bill</button>
+                    <button type="button" class="secondary" onclick="downloadPDF()" id="downloadBtn"
+                        style="display:none;">Download PDF</button>
+                    <button type="button" class="ghost" id="resetDraftBtn">Reset Draft</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="invoice-section" id="invoice" style="display:none;">
+            <div class="invoice-header">
+                <div class="business-info">
+                    <h1 id="displaySellerName"></h1>
+                    <p id="displaySellerAddress"></p>
+                    <p id="displaySellerEmail"></p>
+                    <p id="displaySellerPhone"></p>
+                </div>
+                <div class="invoice-title">
+                    <h1 id="displayInvoiceTitle">INVOICE</h1>
+                </div>
+            </div>
+
+            <div class="invoice-details">
+                <div class="bill-to">
+                    <h3>BILL TO</h3>
+                    <p id="displayBillToName"></p>
+                    <p id="displayBillToAddress"></p>
+                    <p id="displayBillToEmail"></p>
+                    <p id="displayBillToPhone"></p>
+                </div>
+                <div class="invoice-meta">
+                    <p><strong>Invoice Date:</strong> <span id="displayInvoiceDate"></span></p>
+                    <p id="dueDateRow"><strong>Due Date:</strong> <span id="displayInvoiceDueDate"></span></p>
+                    <p><strong>Invoice Number:</strong> <span id="displayInvoiceNumber"></span></p>
+                </div>
+            </div>
+
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>DESCRIPTION</th>
+                        <th>QTY</th>
+                        <th>UNIT PRICE</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody id="displayItemsBody"></tbody>
+            </table>
+
+            <div class="invoice-totals">
+                <div class="subtotal">
+                    <p><strong>SUBTOTAL</strong> <span id="displaySubtotal"></span></p>
+                    <p id="taxRow"><strong>TAX</strong> <span id="displayTaxAmount"></span></p>
+                    <p id="discountRow"><strong>DISCOUNT</strong> <span id="displayDiscount"></span></p>
+                </div>
+                <div class="balance-due">
+                    <h2>Balance Due <span id="displayBalanceDue"></span></h2>
+                </div>
+            </div>
+
+            <div class="invoice-footer">
+                <h3 id="displayNotesHeading"></h3>
+                <p id="displayInstructions"></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

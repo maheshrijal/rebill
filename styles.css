@@ -1,0 +1,924 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* ===== Design System Tokens ===== */
+:root {
+    /* Primary palette - Indigo/Violet */
+    --primary-50: #eef2ff;
+    --primary-100: #e0e7ff;
+    --primary-200: #c7d2fe;
+    --primary-300: #a5b4fc;
+    --primary-400: #818cf8;
+    --primary-500: #6366f1;
+    --primary-600: #4f46e5;
+    --primary-700: #4338ca;
+    --primary-800: #3730a3;
+    --primary-900: #312e81;
+
+    /* Neutral palette */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+
+    /* Semantic colors */
+    --success-50: #ecfdf5;
+    --success-500: #10b981;
+    --success-600: #059669;
+    --error-50: #fef2f2;
+    --error-500: #ef4444;
+    --error-600: #dc2626;
+
+    /* Surface & backgrounds */
+    --surface: #ffffff;
+    --surface-elevated: rgba(255, 255, 255, 0.8);
+    --surface-glass: rgba(255, 255, 255, 0.7);
+    --background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 50%, #e8ecff 100%);
+    --background-subtle: #f8fafc;
+
+    /* Text colors */
+    --text-primary: var(--gray-900);
+    --text-secondary: var(--gray-600);
+    --text-muted: var(--gray-500);
+    --text-inverse: #ffffff;
+
+    /* Borders */
+    --border-light: var(--gray-200);
+    --border-medium: var(--gray-300);
+    --border-focus: var(--primary-400);
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+
+    /* Spacing scale */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+
+    /* Border radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ===== Base Reset & Typography ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--background);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Layout ===== */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    gap: 0;
+}
+
+/* ===== Form Section (Generator) ===== */
+.form-section {
+    background: var(--surface-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: var(--space-8) var(--space-10);
+    border-right: 1px solid var(--border-light);
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) transparent;
+}
+
+.form-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.form-section::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius-full);
+}
+
+.form-section::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+.form-section h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--primary-100);
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.form-section h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(180deg, var(--primary-500), var(--primary-600));
+    border-radius: var(--radius-full);
+}
+
+/* ===== Form Blocks ===== */
+.form-block {
+    padding-bottom: var(--space-5);
+    margin-bottom: var(--space-5);
+    border-bottom: 1px solid var(--gray-100);
+    animation: fadeInUp var(--transition-slow) ease-out;
+}
+
+.form-block:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.form-block h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--primary-700);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* ===== Form Grid ===== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group.span-2 {
+    grid-column: span 2;
+}
+
+/* ===== Form Labels ===== */
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+}
+
+/* ===== Form Inputs ===== */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: inherit;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    background: var(--surface);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background-color var(--transition-fast);
+    outline: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--gray-400);
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+    border-color: var(--gray-300);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    background: var(--surface);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+/* ===== Line Items ===== */
+.items-header {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 1fr 40px;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+}
+
+.items-header span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.item-row {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 1fr 40px;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-2) 0;
+    margin-bottom: var(--space-2);
+    animation: fadeInUp var(--transition-fast) ease-out;
+}
+
+.item-row input {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.875rem;
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.item-row input:focus {
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+.item-total {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    text-align: right;
+    padding-right: var(--space-2);
+}
+
+.remove-item {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--error-50);
+    color: var(--error-500);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.remove-item:hover {
+    background: var(--error-500);
+    color: white;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== Totals Preview ===== */
+.totals-preview {
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--success-50) 100%);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--primary-100);
+    margin-top: var(--space-3);
+}
+
+.totals-preview p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+    font-size: 0.9rem;
+}
+
+.totals-preview p:last-child {
+    margin-bottom: 0;
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--primary-200);
+    font-weight: 700;
+    color: var(--primary-700);
+}
+
+.totals-preview strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* ===== Buttons ===== */
+button {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: var(--space-3) var(--space-5);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    transition: all var(--transition-base);
+    outline: none;
+}
+
+button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    margin-top: var(--space-4);
+}
+
+.button-row input[type="file"] {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding: var(--space-2) 0;
+}
+
+/* Primary Button */
+.primary {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-sm), 0 2px 8px rgba(99, 102, 241, 0.25);
+}
+
+.primary:hover {
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+    box-shadow: var(--shadow-md), 0 4px 12px rgba(99, 102, 241, 0.35);
+    transform: translateY(-1px);
+}
+
+.primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Secondary Button */
+.secondary {
+    background: var(--gray-800);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-sm);
+}
+
+.secondary:hover {
+    background: var(--gray-900);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.secondary:active {
+    transform: translateY(0);
+}
+
+/* Ghost Button */
+.ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border-light);
+}
+
+.ghost:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-300);
+    color: var(--text-primary);
+    transform: none;
+    box-shadow: none;
+}
+
+.ghost:active {
+    background: var(--gray-100);
+}
+
+/* ===== Invoice Preview Section ===== */
+.invoice-section {
+    background: white;
+    padding: var(--space-10);
+    height: 100vh;
+    overflow-y: auto;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.invoice-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    gap: 20px;
+}
+
+.business-info {
+    text-align: left;
+}
+
+.business-info h1 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.business-info p {
+    margin-bottom: 3px;
+    color: #666;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.invoice-title {
+    text-align: right;
+}
+
+.invoice-title h1 {
+    font-size: 36px;
+    color: #2c3e50;
+    font-weight: bold;
+    margin: 0;
+}
+
+.invoice-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.bill-to h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.bill-to p {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+#displaySellerAddress,
+#displayBillToAddress,
+#displayInstructions {
+    white-space: pre-line;
+}
+
+.invoice-meta p {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.invoice-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.invoice-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    color: #666;
+}
+
+.invoice-table th:last-child,
+.invoice-table td:last-child {
+    text-align: right;
+}
+
+.invoice-totals {
+    text-align: right;
+    margin-bottom: 40px;
+}
+
+.subtotal {
+    margin-bottom: 10px;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+}
+
+.subtotal p {
+    color: #666;
+}
+
+.balance-due {
+    background: #f8f9fa;
+    padding: 15px;
+    border: 2px solid #2c3e50;
+}
+
+.balance-due h2 {
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+.invoice-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.invoice-footer h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.invoice-footer p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.bank-details p {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+    @page {
+        margin: 0.5in;
+        size: A4;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    html,
+    body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+    }
+
+    .container {
+        display: block !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        grid-template-columns: none !important;
+        gap: 0 !important;
+    }
+
+    .form-section {
+        display: none !important;
+    }
+
+    .invoice-section {
+        box-shadow: none !important;
+        padding: 20px !important;
+        margin: 0 !important;
+        min-height: auto !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+    }
+
+    .invoice-header {
+        margin-bottom: 30px !important;
+        border-bottom: none !important;
+        padding-bottom: 15px !important;
+    }
+
+    .business-info h1 {
+        font-size: 16px !important;
+        margin-bottom: 5px !important;
+    }
+
+    .business-info p {
+        font-size: 11px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .invoice-title h1 {
+        font-size: 28px !important;
+    }
+
+    .invoice-details {
+        margin-bottom: 20px !important;
+    }
+
+    .bill-to h3 {
+        font-size: 12px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .bill-to p,
+    .invoice-meta p {
+        font-size: 11px !important;
+        margin-bottom: 3px !important;
+    }
+
+    .invoice-table {
+        margin-bottom: 20px !important;
+        font-size: 11px !important;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 8px !important;
+        font-size: 11px !important;
+    }
+
+    .invoice-totals {
+        margin-bottom: 30px !important;
+        font-size: 11px !important;
+    }
+
+    .balance-due h2 {
+        font-size: 14px !important;
+    }
+
+    .invoice-footer h3 {
+        font-size: 13px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .invoice-footer p,
+    .bank-details p {
+        font-size: 11px !important;
+        margin-bottom: 3px !important;
+    }
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .form-section {
+        height: auto;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+        padding: var(--space-6);
+    }
+
+    .invoice-section {
+        height: auto;
+        min-height: 600px;
+    }
+}
+
+/* ===== Responsive: Mobile ===== */
+@media (max-width: 640px) {
+    body {
+        font-size: 15px;
+    }
+
+    .container {
+        gap: 0;
+    }
+
+    .form-section {
+        padding: var(--space-5);
+    }
+
+    .form-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: var(--space-5);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+
+    .form-group.span-2 {
+        grid-column: auto;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: var(--space-4);
+        font-size: 1rem;
+        min-height: 48px;
+    }
+
+    /* Mobile line items - card style */
+    .items-header {
+        display: none;
+    }
+
+    .item-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+        background: var(--gray-50);
+        padding: var(--space-4);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-3);
+        position: relative;
+    }
+
+    .item-row input {
+        padding: var(--space-3) var(--space-4);
+        font-size: 1rem;
+        min-height: 48px;
+    }
+
+    .item-row input[type="number"] {
+        text-align: left;
+    }
+
+    .item-row .item-description::before {
+        content: 'Description';
+    }
+
+    .item-row input::placeholder {
+        color: var(--gray-400);
+    }
+
+    .item-total {
+        text-align: left;
+        font-size: 1rem;
+        padding: var(--space-2) 0;
+        border-top: 1px dashed var(--gray-200);
+    }
+
+    .item-total::before {
+        content: 'Line Total: ';
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .remove-item {
+        position: absolute;
+        top: var(--space-3);
+        right: var(--space-3);
+        width: 32px;
+        height: 32px;
+    }
+
+    .button-row {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .button-row button {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    .button-row input[type="file"] {
+        width: 100%;
+    }
+
+    /* Invoice preview mobile */
+    .invoice-section {
+        padding: var(--space-5);
+        min-height: auto;
+    }
+
+    .invoice-header {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    .invoice-title {
+        text-align: left;
+        margin-top: var(--space-3);
+    }
+
+    .invoice-title h1 {
+        font-size: 28px;
+    }
+
+    .invoice-details {
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .invoice-meta {
+        margin-top: 0;
+    }
+
+    .invoice-table {
+        font-size: 0.875rem;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: var(--space-2) var(--space-3);
+    }
+}
+
+/* ===== Focus visible for accessibility ===== */
+:focus-visible {
+    outline: 2px solid var(--primary-400);
+    outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: none;
+}
