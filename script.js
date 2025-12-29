@@ -1,7 +1,137 @@
 const STORAGE_KEY = 'invoice.draft.v1';
 const LAST_NUMBER_KEY = 'invoice.lastNumber';
+const HISTORY_KEY = 'invoice.history';
 
 let isApplyingData = false;
+
+// ===== History Management =====
+function getHistory() {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return [];
+    try {
+        return JSON.parse(raw);
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveToHistory(data) {
+    const history = getHistory();
+    const invoiceNumber = data.invoice.number;
+
+    // Check if invoice number already exists
+    const existing = history.find(h => h.invoiceNumber === invoiceNumber);
+    if (existing) {
+        const shouldOverwrite = confirm(`Invoice #${invoiceNumber} already exists in history. Overwrite it?`);
+        if (!shouldOverwrite) return;
+    }
+
+    const entry = {
+        id: Date.now(),
+        invoiceNumber: invoiceNumber,
+        customerName: data.billTo.name,
+        total: data.totals.total,
+        currency: data.settings.currency,
+        date: data.invoice.date,
+        savedAt: new Date().toISOString(),
+        data: data
+    };
+
+    // Remove duplicate if same invoice number exists
+    const filtered = history.filter(h => h.invoiceNumber !== entry.invoiceNumber);
+    filtered.unshift(entry);
+
+    // Keep max 50 entries
+    const trimmed = filtered.slice(0, 50);
+    try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+    } catch (e) {
+        alert('History storage is full. Clear some old invoices.');
+        return;
+    }
+    renderHistoryList();
+}
+
+function deleteFromHistory(id) {
+    const history = getHistory();
+    const filtered = history.filter(h => h.id !== id);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered));
+    renderHistoryList();
+}
+
+function clearHistory() {
+    if (!confirm('Clear all invoice history?')) return;
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistoryList();
+}
+
+function loadFromHistory(id) {
+    const history = getHistory();
+    const entry = history.find(h => h.id === id);
+    if (!entry || !entry.data) return;
+
+    applyDataToForm(entry.data);
+    toggleHistoryPanel(false);
+}
+
+function renderHistoryList() {
+    const list = document.getElementById('historyList');
+    if (!list) return;
+
+    const history = getHistory();
+
+    if (history.length === 0) {
+        list.innerHTML = '<p class="history-empty">No invoices saved yet. Generate a bill to save it here.</p>';
+        return;
+    }
+
+    list.innerHTML = '';
+    history.forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.dataset.id = entry.id;
+
+        const info = document.createElement('div');
+        info.className = 'history-item-info';
+
+        const title = document.createElement('div');
+        title.className = 'history-item-title';
+        title.textContent = `#${entry.invoiceNumber} - ${entry.customerName || 'No customer'}`;
+
+        const meta = document.createElement('div');
+        meta.className = 'history-item-meta';
+        meta.textContent = `${formatDate(entry.date)} · ${formatCurrency(entry.total, entry.currency)}`;
+
+        info.appendChild(title);
+        info.appendChild(meta);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'history-item-delete';
+        deleteBtn.dataset.id = entry.id;
+        deleteBtn.title = 'Delete';
+        deleteBtn.textContent = '×';
+
+        item.appendChild(info);
+        item.appendChild(deleteBtn);
+        list.appendChild(item);
+    });
+}
+
+function toggleHistoryPanel(show) {
+    const panel = document.getElementById('historyPanel');
+    if (!panel) return;
+
+    if (typeof show === 'boolean') {
+        panel.style.display = show ? 'block' : 'none';
+    } else {
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
+
+    if (panel.style.display === 'block') {
+        renderHistoryList();
+    }
+}
 
 function getValue(id, fallback = '') {
     const el = document.getElementById(id);
@@ -21,10 +151,14 @@ function setText(id, value) {
     el.textContent = value ?? '';
 }
 
-function setHTML(id, value) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = value ?? '';
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 function parseNumber(value, fallback = 0) {
@@ -88,13 +222,41 @@ function addItemRow(item = {}) {
     const row = document.createElement('div');
     row.className = 'item-row';
 
-    row.innerHTML = `
-        <input type="text" class="item-description" placeholder="Description" value="${item.description ?? ''}">
-        <input type="number" class="item-quantity" min="0" step="1" value="${item.quantity ?? 1}">
-        <input type="number" class="item-unit-price" min="0" step="0.01" value="${item.unitPrice ?? 0}">
-        <span class="item-total">0.00</span>
-        <button type="button" class="remove-item" title="Remove item">×</button>
-    `;
+    const descInput = document.createElement('input');
+    descInput.type = 'text';
+    descInput.className = 'item-description';
+    descInput.placeholder = 'Description';
+    descInput.value = item.description ?? '';
+
+    const qtyInput = document.createElement('input');
+    qtyInput.type = 'number';
+    qtyInput.className = 'item-quantity';
+    qtyInput.min = '0';
+    qtyInput.step = '1';
+    qtyInput.value = item.quantity ?? 1;
+
+    const priceInput = document.createElement('input');
+    priceInput.type = 'number';
+    priceInput.className = 'item-unit-price';
+    priceInput.min = '0';
+    priceInput.step = '0.01';
+    priceInput.value = item.unitPrice ?? 0;
+
+    const totalSpan = document.createElement('span');
+    totalSpan.className = 'item-total';
+    totalSpan.textContent = '0.00';
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-item';
+    removeBtn.title = 'Remove item';
+    removeBtn.textContent = '×';
+
+    row.appendChild(descInput);
+    row.appendChild(qtyInput);
+    row.appendChild(priceInput);
+    row.appendChild(totalSpan);
+    row.appendChild(removeBtn);
 
     container.appendChild(row);
 }
@@ -219,12 +381,24 @@ function renderInvoice(data) {
         itemsBody.innerHTML = '';
         items.forEach((item) => {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${item.description || ''}</td>
-                <td>${item.quantity || 0}</td>
-                <td>${formatCurrency(item.unitPrice || 0, settings.currency, settings.locale)}</td>
-                <td>${formatCurrency(item.total || 0, settings.currency, settings.locale)}</td>
-            `;
+
+            const descTd = document.createElement('td');
+            descTd.textContent = item.description || '';
+
+            const qtyTd = document.createElement('td');
+            qtyTd.textContent = item.quantity || 0;
+
+            const priceTd = document.createElement('td');
+            priceTd.textContent = formatCurrency(item.unitPrice || 0, settings.currency, settings.locale);
+
+            const totalTd = document.createElement('td');
+            totalTd.textContent = formatCurrency(item.total || 0, settings.currency, settings.locale);
+
+            row.appendChild(descTd);
+            row.appendChild(qtyTd);
+            row.appendChild(priceTd);
+            row.appendChild(totalTd);
+
             itemsBody.appendChild(row);
         });
     }
@@ -258,6 +432,7 @@ function renderInvoice(data) {
     setText('displayNotesHeading', invoice.notes || 'Thank you for your business');
     setText('displayInstructions', invoice.instructions || '');
 
+    document.getElementById('invoicePlaceholder').style.display = 'none';
     document.getElementById('invoice').style.display = 'block';
     document.getElementById('downloadBtn').style.display = 'inline-block';
 }
@@ -283,11 +458,27 @@ function loadDraft() {
 
 function deepMerge(target, source) {
     if (!source || typeof source !== 'object') return target;
+
+    // Dangerous keys that could lead to prototype pollution
+    const UNSAFE_KEYS = ['__proto__', 'constructor', 'prototype'];
+
+    function hasUnsafeKeys(obj, visited = new Set()) {
+        if (!obj || typeof obj !== 'object' || visited.has(obj)) return false;
+        visited.add(obj);
+        return UNSAFE_KEYS.some(k => k in obj) ||
+            Object.values(obj).some(v => v && typeof v === 'object' && hasUnsafeKeys(v, visited));
+    }
+
     Object.keys(source).forEach((key) => {
+        // Skip prototype pollution vectors
+        if (UNSAFE_KEYS.includes(key)) return;
+        if (!Object.prototype.hasOwnProperty.call(source, key)) return;
+
         const value = source[key];
         if (Array.isArray(value)) {
             target[key] = value.slice();
         } else if (value && typeof value === 'object') {
+            if (hasUnsafeKeys(value)) return;
             if (!target[key] || typeof target[key] !== 'object') {
                 target[key] = {};
             }
@@ -376,6 +567,7 @@ function generateBill() {
     saveDraft(data);
     renderInvoice(data);
     localStorage.setItem(LAST_NUMBER_KEY, data.invoice.number);
+    saveToHistory(data);
     document.getElementById('invoice').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -583,8 +775,26 @@ function resetDraft() {
 
     localStorage.removeItem(STORAGE_KEY);
     document.getElementById('invoice').style.display = 'none';
+    document.getElementById('invoicePlaceholder').style.display = 'flex';
     document.getElementById('downloadBtn').style.display = 'none';
     setValue('jsonData', '');
+
+    // Reset all form fields
+    setValue('sellerName', '');
+    setValue('sellerAddress', '');
+    setValue('sellerEmail', '');
+    setValue('sellerPhone', '');
+    setValue('billToName', '');
+    setValue('billToAddress', '');
+    setValue('billToEmail', '');
+    setValue('billToPhone', '');
+    setValue('invoiceTitle', 'INVOICE');
+    setValue('invoiceDueDate', '');
+    setValue('currencyCode', 'INR');
+    setValue('taxRate', '0');
+    setValue('discountAmount', '0');
+    setValue('invoiceNotes', '');
+    setValue('invoiceInstructions', '');
 
     const today = new Date().toISOString().split('T')[0];
     setValue('invoiceDate', today);
@@ -592,6 +802,8 @@ function resetDraft() {
     const lastNumber = localStorage.getItem(LAST_NUMBER_KEY);
     if (lastNumber) {
         setValue('invoiceNumber', String(parseNumber(lastNumber, 0) + 1));
+    } else {
+        setValue('invoiceNumber', '1');
     }
 
     renderItemsForm([]);
@@ -634,6 +846,75 @@ function attachEventHandlers() {
 
     document.getElementById('importFile').addEventListener('change', handleFileImport);
     document.getElementById('resetDraftBtn').addEventListener('click', resetDraft);
+
+    // Invoice number increment/decrement buttons
+    document.getElementById('incrementInvoice').addEventListener('click', () => {
+        const input = document.getElementById('invoiceNumber');
+        const current = parseNumber(input.value, 0);
+        input.value = current + 1;
+        syncFromForm({ render: isInvoiceVisible() });
+    });
+
+    document.getElementById('decrementInvoice').addEventListener('click', () => {
+        const input = document.getElementById('invoiceNumber');
+        const current = parseNumber(input.value, 0);
+        if (current > 1) {
+            input.value = current - 1;
+            syncFromForm({ render: isInvoiceVisible() });
+        }
+    });
+
+    // Drag and drop support for JSON textarea
+    const jsonTextarea = document.getElementById('jsonData');
+
+    jsonTextarea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        jsonTextarea.classList.add('drag-over');
+    });
+
+    jsonTextarea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        jsonTextarea.classList.remove('drag-over');
+    });
+
+    jsonTextarea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        jsonTextarea.classList.remove('drag-over');
+
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+
+        if (!file.name.endsWith('.json') && file.type !== 'application/json') {
+            alert('Please drop a .json file.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            importJsonData(reader.result);
+        };
+        reader.readAsText(file);
+    });
+
+    // History panel handlers
+    document.getElementById('historyToggle').addEventListener('click', () => toggleHistoryPanel());
+    document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+
+    document.getElementById('historyList').addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.history-item-delete');
+        if (deleteBtn) {
+            e.stopPropagation();
+            const id = parseInt(deleteBtn.dataset.id, 10);
+            deleteFromHistory(id);
+            return;
+        }
+
+        const item = e.target.closest('.history-item');
+        if (item) {
+            const id = parseInt(item.dataset.id, 10);
+            loadFromHistory(id);
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
