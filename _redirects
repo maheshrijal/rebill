@@ -1,9 +1,3 @@
-/*
-  Cloudflare Pages _redirects file
-  https://developers.cloudflare.com/pages/configuration/redirects/
-  
-  Redirect www to root domain
-*/
-
-# Redirect www subdomain to root
-https://www.rebill.mrjl.dev/* https://rebill.mrjl.dev/:splat 301
+# Cloudflare Pages _redirects file
+# Docs: https://developers.cloudflare.com/pages/configuration/redirects/
+# Note: Only relative URLs are allowed in Pages redirects.
