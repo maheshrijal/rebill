@@ -43,7 +43,12 @@ function saveToHistory(data) {
 
     // Keep max 50 entries
     const trimmed = filtered.slice(0, 50);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+    try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+    } catch (e) {
+        alert('History storage is full. Clear some old invoices.');
+        return;
+    }
     renderHistoryList();
 }
 
@@ -465,6 +470,11 @@ function deepMerge(target, source) {
         if (Array.isArray(value)) {
             target[key] = value.slice();
         } else if (value && typeof value === 'object') {
+            // Validate nested object doesn't have unsafe keys before recursing
+            if (UNSAFE_KEYS.some(k => k in value)) {
+                // Skip this object entirely if it contains unsafe keys
+                return;
+            }
             if (!target[key] || typeof target[key] !== 'object') {
                 target[key] = {};
             }
