@@ -19,8 +19,6 @@ import {
 import { addItemRow, renderItemsForm, ensureAtLeastOneItemRow } from './modules/items.js';
 import { renderInvoice, isInvoiceVisible } from './modules/invoice.js';
 import {
-    getDataFromForm,
-    updateFormTotalsDisplay,
     validateData,
     syncFromForm,
     applyDataToForm
