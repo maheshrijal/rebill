@@ -126,6 +126,13 @@ function attachEventHandlers() {
         syncFromForm({ render: shouldRender });
     });
 
+    // Explicitly handle template change for immediate feedback
+    document.getElementById('templateId').addEventListener('change', () => {
+        if (isInvoiceVisible()) {
+            syncFromForm({ render: true });
+        }
+    });
+
     document.getElementById('addItemBtn').addEventListener('click', () => {
         addItemRow({ description: '', quantity: 1, unitPrice: 0 });
         syncFromForm({ render: isInvoiceVisible() });
