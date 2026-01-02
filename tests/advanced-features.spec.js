@@ -5,7 +5,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const fs = require('fs');
-const pdfParse = require('pdf-parse');
+const pdfParse = require('pdf-parse/lib/pdf-parse.js');
 
 /**
  * Advanced Features Tests
@@ -168,5 +168,146 @@ test.describe('Advanced Invoice Features', () => {
 
         expect(data.text).toContain(notes);
         expect(data.text).toContain(instructions);
+    });
+
+});
+
+test.describe('History and JSON I/O', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/');
+        await page.evaluate(() => localStorage.clear());
+        await page.reload();
+    });
+
+    test('should load invoice from history', async ({ page }) => {
+        // 1. Fill basic info and generate
+        await page.fill('#sellerName', 'History Seller');
+        await page.fill('#sellerAddress', 'Seller Address');
+        await page.fill('#billToName', 'Customer');
+        await page.fill('#billToAddress', 'Address');
+        await page.fill('#invoiceNumber', 'HIST-001');
+        await page.fill('.item-description', 'Item');
+        await page.fill('.item-quantity', '1');
+        await page.fill('.item-unit-price', '100');
+
+        await page.click('button:has-text("Generate Bill")');
+
+        // 2. Clear form
+        page.on('dialog', async d => await d.accept());
+        await page.click('#resetDraftBtn');
+        // resetDraft sets number to 1 (if HIST-001 parsing fails)
+        await expect(page.locator('#invoiceNumber')).not.toHaveValue('HIST-001');
+
+        // 3. Open history and load
+        await page.click('#historyToggle');
+        const historyItem = page.locator('.history-item').first();
+        await expect(historyItem).toBeVisible();
+        await historyItem.click();
+
+        // 4. Verify form is populated (wait for value)
+        await page.waitForFunction((num) => {
+            const el = document.getElementById('invoiceNumber');
+            return el && el.value === num;
+        }, 'HIST-001');
+
+        await expect(page.locator('#invoiceNumber')).toHaveValue('HIST-001');
+        await expect(page.locator('#sellerName')).toHaveValue('History Seller');
+    });
+
+    test('should delete invoice from history', async ({ page }) => {
+        await page.fill('#sellerName', 'Delete Seller');
+        await page.fill('#sellerAddress', 'Address');
+        await page.fill('#billToName', 'Customer');
+        await page.fill('#billToAddress', 'Address');
+        await page.fill('#invoiceNumber', 'DEL-001');
+        await page.fill('.item-description', 'Item');
+        await page.click('button:has-text("Generate Bill")');
+
+        await page.click('#historyToggle');
+        const historyItem = page.locator('.history-item').first();
+        await expect(historyItem).toBeVisible();
+
+        await historyItem.locator('.history-item-delete').click();
+        await expect(page.locator('.history-item')).toHaveCount(0);
+        await expect(page.locator('.history-empty')).toBeVisible();
+    });
+
+    test('should import JSON from textarea', async ({ page }) => {
+        const exportData = {
+            schemaVersion: 1,
+            settings: { currency: 'USD', locale: 'en-US' },
+            seller: { name: 'Imported Seller', address: 'Import Address', email: '', phone: '' },
+            billTo: { name: 'Imported Customer', address: 'Customer Address', email: '', phone: '' },
+            invoice: { title: 'INVOICE', number: 'IMP-123', date: '2025-01-01', dueDate: '', notes: '', instructions: '' },
+            items: [{ description: 'Imported Item', quantity: 5, unitPrice: 100 }],
+            totals: { taxRate: 0, discount: 0 },
+            meta: { showInvoice: false }
+        };
+
+        await page.fill('#jsonData', JSON.stringify(exportData));
+
+        // Verify JSON is in textarea
+        const val = await page.inputValue('#jsonData');
+        expect(val).toContain('Imported Seller');
+
+        await page.click('#importJsonBtn');
+
+        // Wait for JSON to be applied
+        await page.waitForFunction((name) => {
+            const el = document.getElementById('sellerName');
+            return el && el.value === name;
+        }, 'Imported Seller');
+
+        await expect(page.locator('#sellerName')).toHaveValue('Imported Seller');
+        await expect(page.locator('#invoiceNumber')).toHaveValue('IMP-123');
+        const items = page.locator('.item-row');
+        await expect(items).toHaveCount(1);
+    });
+
+    test('should download JSON file', async ({ page }) => {
+        await page.fill('#sellerName', 'Download Seller');
+        await page.fill('#invoiceNumber', 'JSON-DL-01');
+
+        const downloadPromise = page.waitForEvent('download');
+        await page.click('#downloadJsonBtn');
+        const download = await downloadPromise;
+
+        expect(download.suggestedFilename()).toBe('invoice-JSON-DL-01.json');
+        const path = await download.path();
+        const content = JSON.parse(fs.readFileSync(path, 'utf8'));
+        expect(content.seller.name).toBe('Download Seller');
+        expect(content.invoice.number).toBe('JSON-DL-01');
+    });
+
+    test('should handle large number of items for PDF generation', async ({ page }) => {
+        await page.fill('#sellerName', 'Large Seller');
+        await page.fill('#sellerAddress', 'Address');
+        await page.fill('#billToName', 'Customer');
+        await page.fill('#billToAddress', 'Address');
+        await page.fill('#invoiceNumber', 'LRG-001');
+
+        for (let i = 0; i < 29; i++) {
+            await page.click('#addItemBtn');
+        }
+
+        const items = page.locator('.item-row');
+        await expect(items).toHaveCount(30);
+
+        await items.last().locator('.item-description').fill('Last Item');
+        await items.last().locator('.item-quantity').fill('1');
+        await items.last().locator('.item-unit-price').fill('100');
+
+        await page.click('button:has-text("Generate Bill")');
+        await expect(page.locator('#invoice')).toBeVisible();
+
+        const downloadPromise = page.waitForEvent('download');
+        await page.click('#downloadBtn');
+        const download = await downloadPromise;
+        expect(download.suggestedFilename()).toContain('.pdf');
+
+        const path = await download.path();
+        const pdfBuffer = fs.readFileSync(path);
+        const data = await pdfParse(pdfBuffer);
+        expect(data.text).toContain('Last Item');
     });
 });

@@ -80,6 +80,41 @@ test.describe('Invoice Form', () => {
         const itemTotal = page.locator('.item-total').first();
         await expect(itemTotal).toContainText('2,000');
     });
+
+    test('should remove line items and update totals', async ({ page }) => {
+        // Add second item
+        await page.click('#addItemBtn');
+        const rows = page.locator('.item-row');
+        await expect(rows).toHaveCount(2);
+
+        // Fill second item
+        await rows.nth(1).locator('.item-description').fill('Item to remove');
+        await rows.nth(1).locator('.item-quantity').fill('1');
+        await rows.nth(1).locator('.item-unit-price').fill('500');
+
+        // Verify total
+        await page.waitForTimeout(100);
+        await expect(page.locator('#formTotal')).toContainText('500.00'); // Assuming first item is empty
+
+        // Remove it
+        await rows.nth(1).locator('.remove-item').click();
+        await expect(rows).toHaveCount(1);
+
+        // Total should be 0 again if first item is empty
+        await page.waitForTimeout(100);
+        await expect(page.locator('#formTotal')).toContainText('0.00');
+    });
+
+    test('should increment/decrement invoice number', async ({ page }) => {
+        const initialValue = await page.inputValue('#invoiceNumber');
+        const initialNum = parseInt(initialValue);
+
+        await page.click('#incrementInvoice');
+        await expect(page.locator('#invoiceNumber')).toHaveValue(String(initialNum + 1));
+
+        await page.click('#decrementInvoice');
+        await expect(page.locator('#invoiceNumber')).toHaveValue(String(initialNum));
+    });
 });
 
 test.describe('Invoice Generation', () => {
@@ -158,8 +193,10 @@ test.describe('PDF Generation', () => {
         const fs = await import('fs');
         const pdfBuffer = fs.readFileSync(path);
 
-        // Dynamic import of pdf-parse
-        const pdfParse = (await import('pdf-parse')).default;
+        // Create require for pdf-parse to avoid its broken index.js debug mode
+        const { createRequire } = await import('module');
+        const require = createRequire(import.meta.url);
+        const pdfParse = require('pdf-parse/lib/pdf-parse.js');
         const data = await pdfParse(pdfBuffer);
 
         // Verify Content
@@ -280,5 +317,16 @@ test.describe('Reset Draft', () => {
         // Verify fields are cleared
         await expect(page.locator('#sellerName')).toHaveValue('');
         await expect(page.locator('#billToName')).toHaveValue('');
+    });
+
+    test('should persist form data after reload', async ({ page }) => {
+        await page.goto('/');
+        await page.fill('#sellerName', 'Persistent Seller');
+
+        // Wait for auto-save (usually debounced)
+        await page.waitForTimeout(1000);
+
+        await page.reload();
+        await expect(page.locator('#sellerName')).toHaveValue('Persistent Seller');
     });
 });

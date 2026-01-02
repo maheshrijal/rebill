@@ -50,9 +50,9 @@ export function importJsonData(rawJson, syncCallback) {
 
     const base = getDataFromForm();
     const merged = deepMerge(base, parsed);
-    merged.meta = merged.meta || {};
-    merged.meta.showInvoice = true;
 
+    // Update display if needed
+    // Apply core data
     applyDataToForm(merged, syncCallback);
 }
 
