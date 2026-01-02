@@ -19,6 +19,7 @@
     "author": "Mahesh Rijal",
     "license": "MIT",
     "devDependencies": {
-        "@playwright/test": "^1.40.0"
+        "@playwright/test": "^1.40.0",
+        "pdf-parse": "^2.4.5"
     }
 }

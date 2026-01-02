@@ -1,281 +1,266 @@
 /**
  * PDF Module
- * PDF generation and sharing functionality
+ * PDF generation and sharing functionality using pdfmake
  */
 
-import { getValue } from './dom.js';
 import { getDataFromForm } from './form.js';
+import { formatCurrency, formatDate } from './formatters.js';
+
+/**
+ * Generate PDF Document Definition from data
+ * @param {Object} data - Invoice data
+ * @returns {Object} pdfmake document definition
+ */
+function generateDocumentDefinition(data) {
+    const { seller, billTo, invoice, items, totals, settings } = data;
+    const currency = settings.currency;
+    const locale = settings.locale;
+
+    // Helper to format currency
+    const fmt = (amount) => formatCurrency(amount, currency, locale);
+
+    // Prepare table body
+    const tableBody = [];
+
+    // Header
+    tableBody.push([
+        { text: 'DESCRIPTION', style: 'tableHeader' },
+        { text: 'QTY', style: 'tableHeader', alignment: 'center' },
+        { text: 'UNIT PRICE', style: 'tableHeader', alignment: 'right' },
+        { text: 'TOTAL', style: 'tableHeader', alignment: 'right' }
+    ]);
+
+    // Items
+    items.forEach(item => {
+        tableBody.push([
+            { text: item.description || '', style: 'tableCell' },
+            { text: item.quantity, style: 'tableCell', alignment: 'center' },
+            { text: fmt(item.unitPrice), style: 'tableCell', alignment: 'right' },
+            { text: fmt(item.total), style: 'tableCell', alignment: 'right' }
+        ]);
+    });
+
+    // Totals section (rows)
+    const totalsRows = [];
+
+    // Only show Subtotal if there are adjustments (tax or discount)
+    if (totals.taxAmount > 0 || totals.discount > 0) {
+        totalsRows.push([
+            { text: 'Subtotal', alignment: 'right' },
+            { text: fmt(totals.subtotal), alignment: 'right' }
+        ]);
+
+        if (totals.taxAmount > 0) {
+            totalsRows.push([
+                { text: `Tax (${totals.taxRate}%)`, alignment: 'right' },
+                { text: fmt(totals.taxAmount), alignment: 'right' }
+            ]);
+        }
+
+        if (totals.discount > 0) {
+            totalsRows.push([
+                { text: 'Discount', alignment: 'right' },
+                { text: `-${fmt(totals.discount)}`, alignment: 'right' }
+            ]);
+        }
+    }
+
+    // Total Row
+    totalsRows.push([
+        { text: 'Total', bold: true, fontSize: 12, alignment: 'right' },
+        { text: fmt(totals.total), bold: true, fontSize: 12, alignment: 'right' }
+    ]);
+
+    const invoiceNumber = invoice.number || 'draft';
+    const customerName = billTo.name || 'Customer';
+
+    return {
+        // Moderate margins: [left, top, right, bottom]
+        pageMargins: [30, 40, 30, 40],
+
+        info: {
+            title: `Invoice ${invoiceNumber}`,
+            author: seller.name || 'Rebill',
+            subject: `Invoice for ${customerName}`,
+            creator: 'Rebill - Invoice Generator'
+        },
+        content: [
+            // Header Section
+            {
+                columns: [
+                    // Seller Info (Left)
+                    {
+                        width: '*',
+                        stack: [
+                            { text: seller.name || 'Business Name', style: 'businessName' },
+                            { text: seller.address || '', style: 'normalText' },
+                            seller.email ? { text: seller.email, style: 'normalText' } : null,
+                            seller.phone ? { text: seller.phone, style: 'normalText' } : null
+                        ].filter(Boolean)
+                    },
+                    // Invoice Title & Meta (Right)
+                    {
+                        width: 'auto',
+                        alignment: 'right',
+                        stack: [
+                            { text: invoice.title || 'INVOICE', style: 'invoiceTitle' },
+                            {
+                                text: [
+                                    { text: 'Invoice #: ', bold: true },
+                                    invoiceNumber
+                                ],
+                                style: 'metaText'
+                            },
+                            {
+                                text: [
+                                    { text: 'Date: ', bold: true },
+                                    formatDate(invoice.date)
+                                ],
+                                style: 'metaText'
+                            },
+                            invoice.dueDate ? {
+                                text: [
+                                    { text: 'Due Date: ', bold: true },
+                                    formatDate(invoice.dueDate)
+                                ],
+                                style: 'metaText'
+                            } : null
+                        ].filter(Boolean)
+                    }
+                ],
+                columnGap: 20,
+                marginBottom: 40
+            },
+
+            // Bill To Section
+            {
+                text: 'BILL TO',
+                style: 'sectionLabel',
+                marginBottom: 5
+            },
+            {
+                stack: [
+                    { text: customerName, style: 'customerName' },
+                    { text: billTo.address || '', style: 'normalText' },
+                    billTo.email ? { text: billTo.email, style: 'normalText' } : null,
+                    billTo.phone ? { text: billTo.phone, style: 'normalText' } : null
+                ].filter(Boolean),
+                marginBottom: 40
+            },
+
+            // Items Table
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 50, 80, 80],
+                    body: tableBody
+                },
+                layout: {
+                    hLineWidth: (i, node) => 0.5,
+                    vLineWidth: (i, node) => 0.5,
+                    hLineColor: (i, node) => '#E5E7EB',
+                    vLineColor: (i, node) => '#E5E7EB',
+                    paddingLeft: (i) => 8,
+                    paddingRight: (i) => 8,
+                    paddingTop: (i) => 4,
+                    paddingBottom: (i) => 4
+                },
+                marginBottom: 20
+            },
+
+            // Totals
+            {
+                columns: [
+                    { width: '*', text: '' }, // Spacer
+                    {
+                        width: 'auto',
+                        table: {
+                            widths: ['auto', 100],
+                            body: totalsRows
+                        },
+                        layout: 'noBorders'
+                    }
+                ],
+                marginBottom: 40
+            },
+
+            // Footer Section: Center aligned, standard font size, bold "Thank you"
+            {
+                stack: [
+                    // Notes (Thank you message)
+                    invoice.notes ? {
+                        text: invoice.notes,
+                        style: 'footerNote',
+                        alignment: 'center',
+                        marginBottom: 10
+                    } : null,
+
+                    // Instructions (Bank details etc)
+                    invoice.instructions ? {
+                        text: invoice.instructions,
+                        style: 'footerText',
+                        alignment: 'center'
+                    } : null
+                ].filter(Boolean)
+            }
+        ].filter(Boolean),
+
+        styles: {
+            businessName: { fontSize: 18, bold: true, marginBottom: 4, color: '#111827' },
+            invoiceTitle: { fontSize: 24, bold: true, marginBottom: 8, color: '#111827' },
+            sectionLabel: { fontSize: 10, bold: true, color: '#6B7280', letterSpacing: 1, marginBottom: 4 },
+            customerName: { fontSize: 14, bold: true, marginBottom: 4, color: '#111827' },
+            normalText: { fontSize: 10, lineHeight: 1.4, color: '#4B5563' },
+            metaText: { fontSize: 10, marginBottom: 4, alignment: 'right', color: '#4B5563' },
+
+            // Table styles
+            tableHeader: { fontSize: 10, bold: true, color: '#111827', fillColor: '#F3F4F6', margin: [0, 2, 0, 2] },
+            tableCell: { fontSize: 10, color: '#374151', margin: [0, 2, 0, 2] },
+
+            // Footer styles
+            footerNote: { fontSize: 14, bold: true, color: '#111827' },
+            footerText: { fontSize: 10, color: '#6B7280', lineHeight: 1.5 }
+        },
+        defaultStyle: {
+            font: 'Roboto'
+        }
+    };
+}
 
 /**
  * Generate PDF and download it
  */
 export async function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const invoiceElement = document.getElementById('invoice');
     const downloadBtn = document.getElementById('downloadBtn');
+    let originalBtnText = '';
 
-    // Show loading state
-    const originalBtnText = downloadBtn.textContent;
-    downloadBtn.textContent = 'Generating...';
-    downloadBtn.disabled = true;
-
-    // Get invoice data for metadata
-    const data = getDataFromForm();
-    const customerName = data.billTo?.name?.replace(/[^a-zA-Z0-9\s]/g, '').trim().replace(/\s+/g, '-') || 'Customer';
-    const invoiceNumber = data.invoice?.number || 'draft';
-    const filename = `Invoice-${invoiceNumber}-${customerName}.pdf`;
-
-    // Store original styles to restore later
-    const originalStyles = {
-        formDisplay: document.querySelector('.form-section').style.display,
-        invoiceHeight: invoiceElement.style.height,
-        invoiceOverflow: invoiceElement.style.overflow
-    };
+    // Show loading state if button exists
+    if (downloadBtn) {
+        originalBtnText = downloadBtn.textContent;
+        downloadBtn.textContent = 'Generating...';
+        downloadBtn.disabled = true;
+    }
 
     try {
-        // Prepare invoice for capture
-        document.querySelector('.form-section').style.display = 'none';
-        invoiceElement.style.height = 'auto';
-        invoiceElement.style.overflow = 'visible';
-        document.body.classList.add('pdf-generation');
+        const data = getDataFromForm();
+        const docDefinition = generateDocumentDefinition(data);
+        const invoiceNumber = data.invoice.number || 'draft';
+        // Sanitize filename
+        const safeNumber = invoiceNumber.replace(/[^a-zA-Z0-9-_]/g, '-');
+        const filename = `Invoice-${safeNumber}.pdf`;
 
-        // Add print-optimized styles
-        const printStyles = document.createElement('style');
-        printStyles.id = 'pdf-print-styles';
-        printStyles.textContent = `
-            .pdf-generation .invoice-section {
-                background: white !important;
-                box-shadow: none !important;
-                padding: 40px !important;
-                margin: 0 !important;
-                width: 794px !important;
-                min-height: auto !important;
-                height: auto !important;
-                overflow: visible !important;
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-            }
-            .pdf-generation .invoice-header { margin-bottom: 30px !important; }
-            .pdf-generation .business-info h1 { font-size: 18px !important; font-weight: 600 !important; }
-            .pdf-generation .business-info p { font-size: 11px !important; line-height: 1.5 !important; }
-            .pdf-generation .invoice-title h1 { font-size: 28px !important; font-weight: 700 !important; }
-            .pdf-generation .invoice-table { font-size: 11px !important; }
-            .pdf-generation .invoice-table th,
-            .pdf-generation .invoice-table td { padding: 10px !important; }
-            .pdf-generation .invoice-table th { font-size: 10px !important; font-weight: 600 !important; }
-            /* Tabular figures for number alignment */
-            .pdf-generation .invoice-table td:nth-child(2),
-            .pdf-generation .invoice-table td:nth-child(3),
-            .pdf-generation .invoice-table td:nth-child(4),
-            .pdf-generation .invoice-totals span,
-            .pdf-generation .balance-due span {
-                font-variant-numeric: tabular-nums !important;
-            }
-        `;
-        document.head.appendChild(printStyles);
-
-        // Wait for styles to apply
-        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-
-        // Capture with high DPI for crisp output
-        const canvas = await html2canvas(invoiceElement, {
-            scale: 3, // Higher scale for better quality
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-            windowWidth: 794, // A4 width at 96 DPI
-            onclone: (clonedDoc) => {
-                // Ensure cloned element is fully visible
-                const clonedInvoice = clonedDoc.getElementById('invoice');
-                if (clonedInvoice) {
-                    clonedInvoice.style.height = 'auto';
-                    clonedInvoice.style.overflow = 'visible';
-                }
-            }
-        });
-
-        // Create PDF with proper A4 dimensions
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-            compress: true
-        });
-
-        // Set PDF metadata
-        pdf.setProperties({
-            title: `Invoice ${invoiceNumber}`,
-            subject: `Invoice for ${data.billTo?.name || 'Customer'}`,
-            author: data.seller?.name || 'Rebill',
-            creator: 'Rebill - Invoice Generator (rebill.mrjl.dev)',
-            keywords: 'invoice, receipt, billing'
-        });
-
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 10;
-        const contentWidth = pageWidth - (margin * 2);
-
-        // Calculate image dimensions maintaining aspect ratio
-        const imgWidth = contentWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        // Handle multi-page if content is taller than one page
-        const maxHeightPerPage = pageHeight - (margin * 2);
-
-        if (imgHeight <= maxHeightPerPage) {
-            // Single page - center vertically if short
-            const yOffset = margin;
-            pdf.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', margin, yOffset, imgWidth, imgHeight);
-        } else {
-            // Multi-page handling for long invoices
-            let remainingHeight = imgHeight;
-            let sourceY = 0;
-            let pageNum = 0;
-
-            while (remainingHeight > 0) {
-                if (pageNum > 0) pdf.addPage();
-
-                const sliceHeight = Math.min(remainingHeight, maxHeightPerPage);
-                const sourceSliceHeight = (sliceHeight / imgHeight) * canvas.height;
-
-                // Create a slice canvas for this page
-                const sliceCanvas = document.createElement('canvas');
-                sliceCanvas.width = canvas.width;
-                sliceCanvas.height = sourceSliceHeight;
-                const ctx = sliceCanvas.getContext('2d');
-                ctx.drawImage(canvas, 0, sourceY, canvas.width, sourceSliceHeight, 0, 0, canvas.width, sourceSliceHeight);
-
-                pdf.addImage(sliceCanvas.toDataURL('image/png', 1.0), 'PNG', margin, margin, imgWidth, sliceHeight);
-
-                sourceY += sourceSliceHeight;
-                remainingHeight -= sliceHeight;
-                pageNum++;
-            }
-        }
-
-        pdf.save(filename);
-
-        // Remove print styles
-        document.head.removeChild(printStyles);
+        // Create and download
+        pdfMake.createPdf(docDefinition).download(filename);
 
     } catch (error) {
         console.error('Error generating PDF:', error);
         alert('Error generating PDF. Please try again.');
     } finally {
-        // Restore original styles
-        document.querySelector('.form-section').style.display = originalStyles.formDisplay;
-        invoiceElement.style.height = originalStyles.invoiceHeight;
-        invoiceElement.style.overflow = originalStyles.invoiceOverflow;
-        document.body.classList.remove('pdf-generation');
-
-        // Remove print styles if still present
-        const printStyles = document.getElementById('pdf-print-styles');
-        if (printStyles) printStyles.remove();
-
-        // Restore button
-        downloadBtn.textContent = originalBtnText;
-        downloadBtn.disabled = false;
-    }
-}
-
-/**
- * Generate PDF as Blob for sharing
- * @returns {Promise<{blob: Blob, filename: string}>} PDF blob and filename
- */
-export async function generatePDFBlob() {
-    const { jsPDF } = window.jspdf;
-    const invoiceElement = document.getElementById('invoice');
-
-    const data = getDataFromForm();
-    const customerName = data.billTo?.name?.replace(/[^a-zA-Z0-9\s]/g, '').trim().replace(/\s+/g, '-') || 'Customer';
-    const invoiceNumber = data.invoice?.number || 'draft';
-    const filename = `Invoice-${invoiceNumber}-${customerName}.pdf`;
-
-    // Store original styles
-    const originalStyles = {
-        formDisplay: document.querySelector('.form-section').style.display,
-        invoiceHeight: invoiceElement.style.height,
-        invoiceOverflow: invoiceElement.style.overflow
-    };
-
-    try {
-        // Prepare invoice for capture
-        document.querySelector('.form-section').style.display = 'none';
-        invoiceElement.style.height = 'auto';
-        invoiceElement.style.overflow = 'visible';
-        document.body.classList.add('pdf-generation');
-
-        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-
-        // Capture with html2canvas
-        const canvas = await html2canvas(invoiceElement, {
-            scale: 3,
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-            windowWidth: 794,
-            onclone: (clonedDoc) => {
-                const clonedInvoice = clonedDoc.getElementById('invoice');
-                if (clonedInvoice) {
-                    clonedInvoice.style.height = 'auto';
-                    clonedInvoice.style.overflow = 'visible';
-                }
-            }
-        });
-
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-            compress: true
-        });
-
-        pdf.setProperties({
-            title: `Invoice ${invoiceNumber}`,
-            subject: `Invoice for ${data.billTo?.name || 'Customer'}`,
-            author: data.seller?.name || 'Rebill',
-            creator: 'Rebill - Invoice Generator',
-            keywords: 'invoice, receipt, billing'
-        });
-
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 10;
-        const contentWidth = pageWidth - (margin * 2);
-        const imgWidth = contentWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const maxHeightPerPage = pageHeight - (margin * 2);
-
-        if (imgHeight <= maxHeightPerPage) {
-            pdf.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', margin, margin, imgWidth, imgHeight);
-        } else {
-            let remainingHeight = imgHeight;
-            let sourceY = 0;
-            let pageNum = 0;
-
-            while (remainingHeight > 0) {
-                if (pageNum > 0) pdf.addPage();
-                const sliceHeight = Math.min(remainingHeight, maxHeightPerPage);
-                const sourceSliceHeight = (sliceHeight / imgHeight) * canvas.height;
-                const sliceCanvas = document.createElement('canvas');
-                sliceCanvas.width = canvas.width;
-                sliceCanvas.height = sourceSliceHeight;
-                const ctx = sliceCanvas.getContext('2d');
-                ctx.drawImage(canvas, 0, sourceY, canvas.width, sourceSliceHeight, 0, 0, canvas.width, sourceSliceHeight);
-                pdf.addImage(sliceCanvas.toDataURL('image/png', 1.0), 'PNG', margin, margin, imgWidth, sliceHeight);
-                sourceY += sourceSliceHeight;
-                remainingHeight -= sliceHeight;
-                pageNum++;
-            }
+        // Restore button if it exists
+        if (downloadBtn) {
+            downloadBtn.textContent = originalBtnText;
+            downloadBtn.disabled = false;
         }
-
-        return { blob: pdf.output('blob'), filename };
-    } finally {
-        // Restore original styles
-        document.querySelector('.form-section').style.display = originalStyles.formDisplay;
-        invoiceElement.style.height = originalStyles.invoiceHeight;
-        invoiceElement.style.overflow = originalStyles.invoiceOverflow;
-        document.body.classList.remove('pdf-generation');
     }
 }
 
@@ -290,7 +275,21 @@ export async function shareInvoice() {
     }
 
     try {
-        const { blob, filename } = await generatePDFBlob();
+        const data = getDataFromForm();
+        const invoiceNumber = data.invoice.number || 'draft';
+        const docDefinition = generateDocumentDefinition(data);
+
+        // Sanitize filename
+        const safeNumber = invoiceNumber.replace(/[^a-zA-Z0-9-_]/g, '-');
+        const filename = `Invoice-${safeNumber}.pdf`;
+
+        // Generate Blob
+        const blob = await new Promise((resolve) => {
+            pdfMake.createPdf(docDefinition).getBlob((blob) => {
+                resolve(blob);
+            });
+        });
+
         const file = new File([blob], filename, { type: 'application/pdf' });
 
         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -300,17 +299,9 @@ export async function shareInvoice() {
                 text: 'Invoice generated with Rebill'
             });
         } else {
-            // Fallback: download the file
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
+            // Fallback: download
+            pdfMake.createPdf(docDefinition).download(filename);
 
-            // Show a message that sharing isn't available
             if (!navigator.share) {
                 console.log('Web Share API not available, downloaded file instead');
             }

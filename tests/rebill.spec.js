@@ -128,7 +128,7 @@ test.describe('PDF Generation', () => {
         await page.reload();
     });
 
-    test('should download PDF without errors', async ({ page }) => {
+    test('should download PDF without errors and contain correct text', async ({ page }) => {
         // Fill complete invoice
         await page.fill('#sellerName', testData.seller.name);
         await page.fill('#sellerAddress', testData.seller.address);
@@ -152,11 +152,23 @@ test.describe('PDF Generation', () => {
         // Verify download
         expect(download.suggestedFilename()).toMatch(/Invoice-.*\.pdf/);
 
-        // Verify file is not empty
+        // Verify file is not empty and check content
         const path = await download.path();
         const fs = await import('fs');
-        const stats = fs.statSync(path);
-        expect(stats.size).toBeGreaterThan(10000); // PDF should be > 10KB
+        const pdfBuffer = fs.readFileSync(path);
+
+        // Dynamic import of pdf-parse
+        const pdfParse = (await import('pdf-parse')).default;
+        const data = await pdfParse(pdfBuffer);
+
+        // Verify Content
+        expect(data.text).toContain('DESCRIPTION');
+        expect(data.text).toContain('QTY');
+        expect(data.text).toContain('UNIT PRICE');
+        expect(data.text).toContain('TOTAL');
+        expect(data.text).toContain(testData.items[0].description);
+        expect(data.text).toContain(testData.seller.name);
+        expect(data.text).toContain("Total");
     });
 
     test('invoice preview should not have horizontal cutoff', async ({ page }) => {
