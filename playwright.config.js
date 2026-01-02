@@ -22,7 +22,8 @@ export default defineConfig({
     /* Reporter to use */
     reporter: [
         ['html', { outputFolder: 'playwright-report' }],
-        ['list']
+        ['list'],
+        ['json', { outputFile: 'test-results.json' }]
     ],
 
     /* Shared settings for all the projects */

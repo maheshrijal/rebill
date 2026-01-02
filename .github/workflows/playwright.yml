@@ -11,6 +11,10 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - uses: actions/checkout@v4
       
@@ -27,6 +31,12 @@ jobs:
       
       - name: Run Playwright tests
         run: npx playwright test
+      
+      - name: Publish Test Report
+        uses: daun/playwright-report-summary@v3
+        if: always()
+        with:
+          report-file: test-results.json
       
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

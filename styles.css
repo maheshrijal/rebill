@@ -768,7 +768,7 @@ button:focus-visible {
 .business-info p {
     margin-bottom: 3px;
     color: #4b5563;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.4;
 }
 
@@ -793,7 +793,7 @@ button:focus-visible {
 .bill-to h3 {
     color: #6b7280;
     margin-bottom: 5px;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.05em;
 }
@@ -801,7 +801,7 @@ button:focus-visible {
 .bill-to p {
     margin-bottom: 4px;
     color: #4b5563;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.4;
 }
 
@@ -821,7 +821,7 @@ button:focus-visible {
 .invoice-meta p {
     margin-bottom: 4px;
     color: #4b5563;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .invoice-table {
@@ -832,19 +832,19 @@ button:focus-visible {
 
 .invoice-table th {
     background: #f3f4f6;
-    padding: 6px 8px;
+    padding: 8px 10px;
     text-align: left;
     border: 0.5px solid #e5e7eb;
     font-weight: 700;
-    font-size: 10px;
+    font-size: 11px;
     color: #111827;
 }
 
 .invoice-table td {
-    padding: 6px 8px;
+    padding: 8px 10px;
     border: 0.5px solid #e5e7eb;
     color: #111827;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .invoice-table th:last-child,
@@ -865,8 +865,8 @@ button:focus-visible {
 }
 
 .totals-breakdown p {
-    margin-bottom: 2px;
-    font-size: 10px;
+    margin-bottom: 4px;
+    font-size: 13px;
     color: #4b5563;
 }
 
@@ -893,7 +893,7 @@ button:focus-visible {
 
 .total-row .total-amount {
     font-weight: 700;
-    font-size: 12px;
+    font-size: 16px;
     color: #111827;
     min-width: 100px;
     text-align: right;
@@ -915,7 +915,7 @@ button:focus-visible {
 
 .invoice-footer p {
     color: #111827;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.5;
     margin-bottom: 0;
 }
