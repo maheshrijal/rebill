@@ -78,7 +78,7 @@ export function validateData(data) {
     if (!data.billTo.name || !data.billTo.address) return false;
     if (!data.invoice.date || !data.invoice.number) return false;
     if (!Array.isArray(data.items) || data.items.length === 0) return false;
-    const validItems = data.items.some((item) => item.description && item.quantity > 0 && item.unitPrice >= 0);
+    const validItems = data.items.every((item) => item.description && item.quantity > 0 && item.unitPrice >= 0);
     return validItems;
 }
 
