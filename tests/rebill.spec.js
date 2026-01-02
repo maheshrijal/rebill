@@ -112,12 +112,11 @@ test.describe('Invoice Generation', () => {
 
     test('should show validation alert for incomplete form', async ({ page }) => {
         // Try to generate without filling required fields
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).toContain('required fields');
-            await dialog.accept();
-        });
-
+        const dialogPromise = page.waitForEvent('dialog');
         await page.click('button:has-text("Generate Bill")');
+        const dialog = await dialogPromise;
+        expect(dialog.message()).toContain('required fields');
+        await dialog.accept();
     });
 });
 
