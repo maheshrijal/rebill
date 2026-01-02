@@ -6,7 +6,7 @@
 import { getValue, setValue, setText } from './dom.js';
 import { parseNumber, formatCurrency } from './formatters.js';
 import { calculateTotals } from './calculations.js';
-import { collectItemsFromForm, renderItemsForm, addItemRow } from './items.js';
+import { collectItemsFromForm, renderItemsForm } from './items.js';
 import { saveDraft, deepMerge } from './storage.js';
 import { renderInvoice, isInvoiceVisible } from './invoice.js';
 
