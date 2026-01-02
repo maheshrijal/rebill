@@ -3,7 +3,7 @@
  * Export and import invoice data as JSON
  */
 
-import { getValue, setValue } from './dom.js';
+import { setValue } from './dom.js';
 import { getDataFromForm, applyDataToForm, syncFromForm } from './form.js';
 import { deepMerge } from './storage.js';
 
