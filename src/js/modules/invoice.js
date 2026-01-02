@@ -21,6 +21,13 @@ export function isInvoiceVisible() {
  */
 export function renderInvoice(data) {
     const { settings, seller, billTo, invoice, items, totals } = data;
+    const templateId = settings.templateId || 'default';
+
+    const invoiceEl = document.getElementById('invoice');
+    // Remove existing template classes
+    invoiceEl.className = invoiceEl.className.replace(/invoice-template-[^\s]+/, '').trim();
+    // Add new template class
+    invoiceEl.classList.add(`invoice-template-${templateId}`);
 
     setText('displaySellerName', seller.name);
     setText('displaySellerAddress', seller.address || '');

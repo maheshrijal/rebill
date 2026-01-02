@@ -17,7 +17,8 @@ import { renderInvoice, isInvoiceVisible } from './invoice.js';
 export function getDataFromForm() {
     const settings = {
         currency: getValue('currencyCode', 'INR').trim() || 'INR',
-        locale: 'en-IN'
+        locale: 'en-IN',
+        templateId: getValue('templateId', 'default')
     };
 
     const items = collectItemsFromForm(settings);
@@ -121,6 +122,7 @@ export function applyDataToForm(data, syncCallback) {
     setValue('invoiceNumber', data.invoice?.number ?? '');
 
     setValue('currencyCode', data.settings?.currency ?? 'INR');
+    setValue('templateId', data.settings?.templateId ?? 'default');
 
     renderItemsForm(data.items || []);
 

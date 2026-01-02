@@ -330,3 +330,29 @@ test.describe('Reset Draft', () => {
         await expect(page.locator('#sellerName')).toHaveValue('Persistent Seller');
     });
 });
+
+test.describe('Template System', () => {
+    test('should switch templates and apply correct styles', async ({ page }) => {
+        await page.goto('/');
+
+        // Fill basic data
+        await page.fill('#sellerName', 'Test Seller');
+        await page.fill('#billToName', 'Test Customer');
+        await page.fill('#invoiceNumber', '300');
+        await page.fill('.item-description', 'Service');
+        await page.fill('.item-quantity', '1');
+        await page.fill('.item-unit-price', '100');
+
+        // Initial Generate
+        await page.click('button:has-text("Generate Bill")');
+        await expect(page.locator('#invoice')).toBeVisible();
+        await expect(page.locator('#invoice')).toHaveClass(/invoice-template-default/);
+
+        // Switch to Minimalist
+        await page.selectOption('#templateId', 'minimal');
+        await page.click('button:has-text("Generate Bill")');
+
+        // Verify class changed
+        await expect(page.locator('#invoice')).toHaveClass(/invoice-template-minimal/);
+    });
+});
