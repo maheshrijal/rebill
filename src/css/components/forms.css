@@ -1,0 +1,328 @@
+/* ===== Form Section (Generator) ===== */
+.form-section {
+    background: var(--surface-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: var(--space-8) var(--space-10);
+    border-right: 1px solid var(--border-light);
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) transparent;
+}
+
+.form-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.form-section::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius-full);
+}
+
+.form-section::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+.form-section h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--primary-100);
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.form-section h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(180deg, var(--primary-500), var(--primary-600));
+    border-radius: var(--radius-full);
+}
+
+/* ===== Form Blocks ===== */
+.form-block {
+    padding-bottom: var(--space-5);
+    margin-bottom: var(--space-5);
+    border-bottom: 1px solid var(--gray-100);
+    animation: fadeInUp var(--transition-slow) ease-out;
+}
+
+.form-block:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.form-block h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--primary-700);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* ===== Form Grid ===== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group.span-2 {
+    grid-column: span 2;
+}
+
+/* ===== Form Labels ===== */
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+}
+
+/* ===== Form Inputs ===== */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: inherit;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    background: var(--surface);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background-color var(--transition-fast);
+    outline: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--gray-400);
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+    border-color: var(--gray-300);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    background: var(--surface);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+.form-group textarea.drag-over {
+    border-color: var(--primary-400);
+    background: var(--primary-50);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+/* ===== Line Items ===== */
+.items-header {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 1fr 40px;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+}
+
+.items-header span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.item-row {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 1fr 40px;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-2) 0;
+    margin-bottom: var(--space-2);
+    animation: fadeInUp var(--transition-fast) ease-out;
+}
+
+.item-row input {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.875rem;
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.item-row input:focus {
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+.item-total {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    text-align: right;
+    padding-right: var(--space-2);
+}
+
+.remove-item {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--error-50);
+    color: var(--error-500);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.remove-item:hover {
+    background: var(--error-500);
+    color: white;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== Number Input with Buttons ===== */
+.number-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.number-input-wrapper input {
+    flex: 1;
+    border-radius: 0;
+    text-align: center;
+    -moz-appearance: textfield;
+}
+
+.number-input-wrapper input::-webkit-outer-spin-button,
+.number-input-wrapper input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-btn {
+    width: 36px;
+    height: 38px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray-100);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border-light);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.number-btn.decrement {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    border-right: none;
+}
+
+.number-btn.increment {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    border-left: none;
+}
+
+.number-btn:hover {
+    background: var(--primary-100);
+    color: var(--primary-700);
+}
+
+.number-btn:active {
+    background: var(--primary-200);
+}
+
+/* ===== Totals Preview ===== */
+.totals-preview {
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--success-50) 100%);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--primary-100);
+    margin-top: var(--space-3);
+}
+
+.totals-preview p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+    font-size: 0.9rem;
+}
+
+.totals-preview p:last-child {
+    margin-bottom: 0;
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--primary-200);
+    font-weight: 700;
+    color: var(--primary-700);
+}
+
+.totals-preview strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
