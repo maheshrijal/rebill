@@ -3,6 +3,7 @@
  * Line items form management
  */
 
+import { getValue } from './dom.js';
 import { parseNumber, formatCurrency } from './formatters.js';
 
 /**
@@ -52,7 +53,9 @@ export function addItemRow(item = {}) {
 
     const totalSpan = document.createElement('span');
     totalSpan.className = 'item-total';
-    totalSpan.textContent = '0.00';
+    const currentCurrency = getValue('currencyCode', 'INR');
+    const initialTotal = (item.quantity ?? 1) * (item.unitPrice ?? 0);
+    totalSpan.textContent = formatCurrency(initialTotal, currentCurrency);
 
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
