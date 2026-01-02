@@ -3,9 +3,12 @@
  * Manages available invoice templates
  */
 
+import DefaultTemplate from './default.js';
+import MinimalTemplate from './minimal.js';
+
 const templates = [
-    { id: 'default', name: 'Default Standard' },
-    { id: 'minimal', name: 'Minimalist' }
+    { id: 'default', name: 'Default Standard', strategy: DefaultTemplate },
+    { id: 'minimal', name: 'Minimalist', strategy: MinimalTemplate }
 ];
 
 /**
@@ -22,5 +25,6 @@ export function getAvailableTemplates() {
  * @returns {Object|null} Template object or null if not found
  */
 export function getTemplate(id) {
-    return templates.find(t => t.id === id) || templates[0];
+    const template = templates.find(t => t.id === id) || templates[0];
+    return template.strategy;
 }

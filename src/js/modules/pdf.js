@@ -4,6 +4,7 @@
  */
 
 import { getTemplate } from './templates/template-registry.js';
+import { getDataFromForm } from './form.js';
 
 /**
  * Generate PDF Document Definition from data
