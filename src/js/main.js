@@ -6,7 +6,7 @@
 // Import modules
 import { getValue, setValue } from './modules/dom.js';
 import { parseNumber } from './modules/formatters.js';
-import { saveDraft, loadDraft, clearDraft, STORAGE_KEY } from './modules/storage.js';
+import { saveDraft, loadDraft, clearDraft } from './modules/storage.js';
 import {
     getHistory,
     saveToHistory,
