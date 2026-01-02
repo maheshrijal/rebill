@@ -731,7 +731,19 @@ button:focus-visible {
     padding: var(--space-10);
     height: 100vh;
     overflow-y: auto;
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for proper number alignment in invoice */
+.invoice-table td:nth-child(2),
+.invoice-table td:nth-child(3),
+.invoice-table td:nth-child(4),
+.invoice-totals span,
+.balance-due span {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
 }
 
 .invoice-header {
