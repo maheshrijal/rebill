@@ -337,7 +337,9 @@ test.describe('Template System', () => {
 
         // Fill basic data
         await page.fill('#sellerName', 'Test Seller');
+        await page.fill('#sellerAddress', '123 Test St');
         await page.fill('#billToName', 'Test Customer');
+        await page.fill('#billToAddress', '456 Client Rd');
         await page.fill('#invoiceNumber', '300');
         await page.fill('.item-description', 'Service');
         await page.fill('.item-quantity', '1');
