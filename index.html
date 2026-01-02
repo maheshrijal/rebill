@@ -32,10 +32,10 @@
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧾%3C/text%3E%3C/svg%3E">
 
     <!-- Styles & Scripts -->
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="src/css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js"></script>
+    <script type="module" src="src/js/main.js"></script>
 </head>
 
 <body>
@@ -204,6 +204,8 @@
                     <button type="button" class="primary" onclick="generateBill()">Generate Bill</button>
                     <button type="button" class="secondary" onclick="downloadPDF()" id="downloadBtn"
                         style="display:none;">Download PDF</button>
+                    <button type="button" class="secondary" onclick="shareInvoice()" id="shareBtn"
+                        style="display:none;">📤 Share</button>
                     <button type="button" class="ghost" id="resetDraftBtn">Reset Draft</button>
                 </div>
             </form>
@@ -258,13 +260,16 @@
             </table>
 
             <div class="invoice-totals">
-                <div class="subtotal">
-                    <p><strong>SUBTOTAL</strong> <span id="displaySubtotal"></span></p>
-                    <p id="taxRow"><strong>TAX</strong> <span id="displayTaxAmount"></span></p>
-                    <p id="discountRow"><strong>DISCOUNT</strong> <span id="displayDiscount"></span></p>
+                <div class="totals-breakdown" id="totalsBreakdown">
+                    <p id="subtotalRow"><span class="totals-label">Subtotal</span> <span id="displaySubtotal"></span>
+                    </p>
+                    <p id="taxRow"><span class="totals-label">Tax</span> <span id="displayTaxAmount"></span></p>
+                    <p id="discountRow"><span class="totals-label">Discount</span> <span id="displayDiscount"></span>
+                    </p>
                 </div>
-                <div class="balance-due">
-                    <h2>Balance Due <span id="displayBalanceDue"></span></h2>
+                <div class="total-row">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount" id="displayBalanceDue"></span>
                 </div>
             </div>
 

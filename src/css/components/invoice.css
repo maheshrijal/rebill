@@ -1,0 +1,238 @@
+/* ===== Invoice Placeholder ===== */
+.invoice-placeholder {
+    background: linear-gradient(135deg, var(--primary-50) 0%, #f0f4ff 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-8);
+}
+
+.placeholder-content {
+    max-width: 320px;
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+    opacity: 0.6;
+}
+
+.placeholder-content h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.placeholder-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.placeholder-content strong {
+    color: var(--primary-600);
+}
+
+/* ===== Invoice Preview Section ===== */
+.invoice-section {
+    background: white;
+    padding: var(--space-10);
+    height: 100vh;
+    overflow-y: auto;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for proper number alignment in invoice */
+.invoice-table td:nth-child(2),
+.invoice-table td:nth-child(3),
+.invoice-table td:nth-child(4),
+.invoice-totals span,
+.balance-due span {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+}
+
+.invoice-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.business-info {
+    text-align: left;
+}
+
+.business-info h1 {
+    font-size: 18px;
+    color: #111827;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.business-info p {
+    margin-bottom: 3px;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.invoice-title {
+    text-align: right;
+}
+
+.invoice-title h1 {
+    font-size: 24px;
+    color: #111827;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.invoice-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.bill-to h3 {
+    color: #6b7280;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.bill-to p {
+    margin-bottom: 4px;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.bill-to p:first-of-type {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+#displaySellerAddress,
+#displayBillToAddress,
+#displayInstructions {
+    white-space: pre-line;
+}
+
+.invoice-meta p {
+    margin-bottom: 4px;
+    color: #4b5563;
+    font-size: 13px;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.invoice-table th {
+    background: #f3f4f6;
+    padding: 8px 10px;
+    text-align: left;
+    border: 0.5px solid #e5e7eb;
+    font-weight: 700;
+    font-size: 11px;
+    color: #111827;
+}
+
+.invoice-table td {
+    padding: 8px 10px;
+    border: 0.5px solid #e5e7eb;
+    color: #111827;
+    font-size: 13px;
+}
+
+.invoice-table th:last-child,
+.invoice-table td:last-child {
+    text-align: right;
+}
+
+.invoice-totals {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 40px;
+}
+
+.totals-breakdown {
+    margin-bottom: 4px;
+    text-align: right;
+}
+
+.totals-breakdown p {
+    margin-bottom: 4px;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.totals-breakdown .totals-label {
+    color: #6b7280;
+    margin-right: 8px;
+}
+
+.total-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 6px;
+    margin-top: 2px;
+    border-top: 0.5px solid #9ca3af;
+}
+
+.total-row .total-label {
+    font-weight: 700;
+    font-size: 12px;
+    color: #111827;
+    padding-left: 8px;
+}
+
+.total-row .total-amount {
+    font-weight: 700;
+    font-size: 16px;
+    color: #111827;
+    min-width: 100px;
+    text-align: right;
+}
+
+.invoice-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: none;
+}
+
+.invoice-footer h3 {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.invoice-footer p {
+    color: #111827;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+.bank-details p {
+    margin-bottom: 5px;
+    color: #666;
+}

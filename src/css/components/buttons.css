@@ -1,0 +1,116 @@
+/* ===== Buttons ===== */
+button {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: var(--space-3) var(--space-5);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    transition: all var(--transition-base);
+    outline: none;
+}
+
+button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    margin-top: var(--space-4);
+}
+
+.button-row input[type="file"].visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.file-input-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: var(--space-3) var(--space-5);
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.file-input-label:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-300);
+    color: var(--text-primary);
+}
+
+/* Primary Button */
+.primary {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-sm), 0 2px 8px rgba(99, 102, 241, 0.25);
+}
+
+.primary:hover {
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+    box-shadow: var(--shadow-md), 0 4px 12px rgba(99, 102, 241, 0.35);
+    transform: translateY(-1px);
+}
+
+.primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Secondary Button */
+.secondary {
+    background: var(--gray-800);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-sm);
+}
+
+.secondary:hover {
+    background: var(--gray-900);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.secondary:active {
+    transform: translateY(0);
+}
+
+/* Ghost Button */
+.ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border-light);
+}
+
+.ghost:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-300);
+    color: var(--text-primary);
+    transform: none;
+    box-shadow: none;
+}
+
+.ghost:active {
+    background: var(--gray-100);
+}

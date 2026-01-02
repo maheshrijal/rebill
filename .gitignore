@@ -58,5 +58,9 @@ node_modules/
 *~
 
 # Temporary files
-*.tmp
 *.temp
+
+# Playwright
+playwright-report/
+test-results/
+test-results.json

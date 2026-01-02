@@ -1,0 +1,33 @@
+/* ===== Helpers ===== */
+
+/* ===== Open Source Badge ===== */
+.open-source-badge {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--primary-600);
+    background: var(--primary-50);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    margin-left: var(--space-2);
+    vertical-align: middle;
+    transition: all var(--transition-fast);
+}
+
+.open-source-badge:hover {
+    background: var(--primary-100);
+    color: var(--primary-700);
+}
+
+/* ===== Focus visible for accessibility ===== */
+:focus-visible {
+    outline: 2px solid var(--primary-400);
+    outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: none;
+}
