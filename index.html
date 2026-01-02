@@ -260,13 +260,16 @@
             </table>
 
             <div class="invoice-totals">
-                <div class="subtotal">
-                    <p><strong>SUBTOTAL</strong> <span id="displaySubtotal"></span></p>
-                    <p id="taxRow"><strong>TAX</strong> <span id="displayTaxAmount"></span></p>
-                    <p id="discountRow"><strong>DISCOUNT</strong> <span id="displayDiscount"></span></p>
+                <div class="totals-breakdown" id="totalsBreakdown">
+                    <p id="subtotalRow"><span class="totals-label">Subtotal</span> <span id="displaySubtotal"></span>
+                    </p>
+                    <p id="taxRow"><span class="totals-label">Tax</span> <span id="displayTaxAmount"></span></p>
+                    <p id="discountRow"><span class="totals-label">Discount</span> <span id="displayDiscount"></span>
+                    </p>
                 </div>
-                <div class="balance-due">
-                    <h2>Balance Due <span id="displayBalanceDue"></span></h2>
+                <div class="total-row">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount" id="displayBalanceDue"></span>
                 </div>
             </div>
 

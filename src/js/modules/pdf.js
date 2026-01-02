@@ -178,7 +178,22 @@ function generateDocumentDefinition(data) {
                             widths: ['auto', 100],
                             body: totalsRows
                         },
-                        layout: 'noBorders'
+                        layout: {
+                            // Add a top border line only above the last row (Total)
+                            hLineWidth: (i, node) => {
+                                const lastRowIndex = node.table.body.length;
+                                return i === lastRowIndex - 1 ? 0.5 : 0;
+                            },
+                            vLineWidth: () => 0,
+                            hLineColor: () => '#9CA3AF',
+                            paddingLeft: () => 8,
+                            paddingRight: () => 0,
+                            paddingTop: (i, node) => {
+                                const lastRowIndex = node.table.body.length;
+                                return i === lastRowIndex - 1 ? 6 : 2;
+                            },
+                            paddingBottom: () => 2
+                        }
                     }
                 ],
                 marginBottom: 40
@@ -215,11 +230,11 @@ function generateDocumentDefinition(data) {
 
             // Table styles
             tableHeader: { fontSize: 10, bold: true, color: '#111827', fillColor: '#F3F4F6', margin: [0, 2, 0, 2] },
-            tableCell: { fontSize: 10, color: '#374151', margin: [0, 2, 0, 2] },
+            tableCell: { fontSize: 10, color: '#111827', margin: [0, 2, 0, 2] },
 
             // Footer styles
             footerNote: { fontSize: 14, bold: true, color: '#111827' },
-            footerText: { fontSize: 10, color: '#6B7280', lineHeight: 1.5 }
+            footerText: { fontSize: 10, color: '#111827', lineHeight: 1.5 }
         },
         defaultStyle: {
             font: 'Roboto'

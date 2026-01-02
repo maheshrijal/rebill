@@ -76,7 +76,19 @@ export function renderInvoice(data) {
         });
     }
 
-    setText('displaySubtotal', formatCurrency(totals.subtotal, settings.currency, settings.locale));
+    // Handle totals breakdown visibility (match PDF logic)
+    const hasAdjustments = totals.taxAmount > 0 || totals.discount > 0;
+
+    // Subtotal row - only show when there are adjustments
+    const subtotalRow = document.getElementById('subtotalRow');
+    if (subtotalRow) {
+        if (hasAdjustments) {
+            subtotalRow.style.display = '';
+            setText('displaySubtotal', formatCurrency(totals.subtotal, settings.currency, settings.locale));
+        } else {
+            subtotalRow.style.display = 'none';
+        }
+    }
 
     // Conditionally show/hide tax row
     const taxRow = document.getElementById('taxRow');
