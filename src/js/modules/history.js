@@ -38,7 +38,7 @@ export function saveToHistory(data) {
     };
 
     // Check for duplicate invoice number
-    const existingIndex = history.findIndex(h => h.number === entry.number && entry.number);
+    const existingIndex = history.findIndex(h => entry.number && h.number === entry.number);
     if (existingIndex >= 0) {
         history[existingIndex] = entry;
     } else {
