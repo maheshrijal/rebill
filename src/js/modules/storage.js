@@ -48,18 +48,9 @@ export function clearDraft() {
 export function deepMerge(target, source) {
     if (!source || typeof source !== 'object') return target;
 
-    // Dangerous keys that could lead to prototype pollution
     const UNSAFE_KEYS = ['__proto__', 'constructor', 'prototype'];
 
-    function hasUnsafeKeys(obj, visited = new Set()) {
-        if (!obj || typeof obj !== 'object' || visited.has(obj)) return false;
-        visited.add(obj);
-        return UNSAFE_KEYS.some(k => k in obj) ||
-            Object.values(obj).some(v => v && typeof v === 'object' && hasUnsafeKeys(v, visited));
-    }
-
     Object.keys(source).forEach((key) => {
-        // Skip prototype pollution vectors
         if (UNSAFE_KEYS.includes(key)) return;
         if (!Object.prototype.hasOwnProperty.call(source, key)) return;
 
@@ -67,7 +58,6 @@ export function deepMerge(target, source) {
         if (Array.isArray(value)) {
             target[key] = value.slice();
         } else if (value && typeof value === 'object') {
-            if (hasUnsafeKeys(value)) return;
             if (!target[key] || typeof target[key] !== 'object') {
                 target[key] = {};
             }

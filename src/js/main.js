@@ -61,11 +61,11 @@ function generateBill() {
 function loadFromHistory(id) {
     const entry = getHistoryEntry(id);
     if (!entry || !entry.data) return;
+    isApplyingData = true;
     applyDataToForm(entry.data, (options) => {
-        isApplyingData = true;
         syncFromForm(options);
-        isApplyingData = false;
     });
+    isApplyingData = false;
     toggleHistoryPanel(false);
 }
 
@@ -148,11 +148,11 @@ function attachEventHandlers() {
             alert('Paste invoice JSON first.');
             return;
         }
+        isApplyingData = true;
         importJsonData(raw, (options) => {
-            isApplyingData = true;
             syncFromForm(options);
-            isApplyingData = false;
         });
+        isApplyingData = false;
     });
 
     document.getElementById('importFile').addEventListener('change', (event) => {
