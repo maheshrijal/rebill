@@ -300,8 +300,8 @@ export async function shareInvoice() {
 
         // Generate Blob
         const blob = await new Promise((resolve) => {
-            pdfMake.createPdf(docDefinition).getBlob((blob) => {
-                resolve(blob);
+            pdfMake.createPdf(docDefinition).getBlob((pdfBlob) => {
+                resolve(pdfBlob);
             });
         });
 
