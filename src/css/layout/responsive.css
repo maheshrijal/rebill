@@ -13,9 +13,19 @@
         padding: var(--space-6);
     }
 
-    .invoice-section {
+    .form-section::before {
+        display: none;
+    }
+
+    .invoice-section,
+    .invoice-placeholder {
         height: auto;
         min-height: 600px;
+    }
+
+    .invoice-section::before,
+    .invoice-placeholder::before {
+        display: none;
     }
 
     .header-row {
@@ -43,7 +53,7 @@
     }
 
     .form-section h2 {
-        font-size: 1.25rem;
+        font-size: 1.35rem;
         margin-bottom: var(--space-5);
     }
 
@@ -79,6 +89,14 @@
         position: relative;
     }
 
+    .item-row:hover {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: var(--space-4);
+        padding-right: var(--space-4);
+        transform: none;
+    }
+
     .item-row input {
         padding: var(--space-3) var(--space-4);
         font-size: 1rem;
@@ -108,6 +126,7 @@
         content: 'Line Total: ';
         color: var(--text-muted);
         font-weight: 500;
+        font-family: 'DM Sans', system-ui, sans-serif;
     }
 
     .remove-item {
@@ -133,7 +152,8 @@
     }
 
     /* Invoice preview mobile */
-    .invoice-section {
+    .invoice-section,
+    .invoice-placeholder {
         padding: var(--space-5);
         min-height: auto;
     }
@@ -149,7 +169,7 @@
     }
 
     .invoice-title h1 {
-        font-size: 28px;
+        font-size: 11px;
     }
 
     .invoice-details {
@@ -170,6 +190,11 @@
         padding: var(--space-2) var(--space-3);
     }
 
+    .total-row {
+        width: 100%;
+        justify-content: space-between;
+    }
+
     /* Header row mobile */
     .header-row {
         flex-direction: column;
@@ -178,7 +203,7 @@
     }
 
     .header-row h2 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     #historyToggle {
@@ -224,8 +249,13 @@
 
     /* Open source badge mobile */
     .open-source-badge {
-        font-size: 0.55rem;
+        font-size: 0.5rem;
         padding: 2px 6px;
+    }
+
+    /* Placeholder mobile */
+    .placeholder-content h3 {
+        font-size: 1.25rem;
     }
 }
 
@@ -256,6 +286,7 @@
         padding: 0 !important;
         grid-template-columns: none !important;
         gap: 0 !important;
+        background: white !important;
     }
 
     .form-section {
@@ -269,6 +300,11 @@
         min-height: auto !important;
         width: 100% !important;
         border-radius: 0 !important;
+        background: white !important;
+    }
+
+    .invoice-section::before {
+        display: none !important;
     }
 
     .invoice-header {
@@ -288,7 +324,8 @@
     }
 
     .invoice-title h1 {
-        font-size: 28px !important;
+        font-size: 10px !important;
+        background: #f5f5f4 !important;
     }
 
     .invoice-details {
@@ -296,7 +333,7 @@
     }
 
     .bill-to h3 {
-        font-size: 12px !important;
+        font-size: 10px !important;
         margin-bottom: 8px !important;
     }
 
@@ -311,6 +348,10 @@
         font-size: 11px !important;
     }
 
+    .invoice-table th {
+        background: #f5f5f4 !important;
+    }
+
     .invoice-table th,
     .invoice-table td {
         padding: 8px !important;
@@ -322,12 +363,27 @@
         font-size: 11px !important;
     }
 
+    .total-row {
+        background: #1c1917 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .total-row .total-label,
+    .total-row .total-amount {
+        color: white !important;
+    }
+
     .balance-due h2 {
         font-size: 14px !important;
     }
 
+    .invoice-footer {
+        border-top: 1px solid #e7e5e4 !important;
+    }
+
     .invoice-footer h3 {
-        font-size: 13px !important;
+        font-size: 11px !important;
         margin-bottom: 10px !important;
     }
 

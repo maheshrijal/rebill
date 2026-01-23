@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+/* Distinctive font pairing: DM Sans for body + Instrument Serif for display */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
 
 body {
-    font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
     font-size: 14px;
     line-height: 1.6;
     color: var(--text-primary);
@@ -15,5 +16,26 @@ h3,
 h4,
 h5,
 h6 {
+    font-family: 'Instrument Serif', Georgia, serif;
     color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+/* Monospace for all financial figures */
+.amount,
+.total,
+.unit-price,
+.quantity,
+.item-total,
+.total-amount,
+#formSubtotal,
+#formTaxAmount,
+#formTotal,
+#displaySubtotal,
+#displayTaxAmount,
+#displayDiscount,
+#displayBalanceDue {
+    font-family: 'DM Mono', 'SF Mono', Consolas, monospace;
+    font-variant-numeric: tabular-nums slashed-zero;
+    letter-spacing: -0.02em;
 }

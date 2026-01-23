@@ -1,9 +1,10 @@
-/* ===== Layout ===== */
+/* ===== Layout - Asymmetrical Golden Ratio Grid ===== */
 .container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(380px, 0.85fr) 1fr;
     min-height: 100vh;
     gap: 0;
+    background: var(--background);
 }
 
 /* ===== Header Row ===== */

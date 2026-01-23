@@ -1,11 +1,11 @@
 /* ===== History Panel ===== */
 .history-panel {
-    background: var(--gray-50);
+    background: var(--surface);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
     padding: var(--space-4);
     margin-bottom: var(--space-5);
-    animation: fadeInUp var(--transition-fast) ease-out;
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .history-header {
@@ -16,12 +16,13 @@
 }
 
 .history-header h3 {
-    font-size: 0.9rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
-    text-transform: none;
-    letter-spacing: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 button.small {
@@ -32,6 +33,21 @@ button.small {
 .history-list {
     max-height: 200px;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) transparent;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius-full);
 }
 
 .history-empty {
@@ -47,8 +63,8 @@ button.small {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-3);
-    background: var(--surface);
-    border: 1px solid var(--border-light);
+    background: var(--gray-50);
+    border: 1px solid transparent;
     border-radius: var(--radius-sm);
     margin-bottom: var(--space-2);
     cursor: pointer;
@@ -56,8 +72,9 @@ button.small {
 }
 
 .history-item:hover {
-    border-color: var(--primary-300);
-    background: var(--primary-50);
+    border-color: var(--gray-300);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
 }
 
 .history-item:last-child {
@@ -70,6 +87,7 @@ button.small {
 }
 
 .history-item-title {
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-weight: 600;
     font-size: 0.85rem;
     color: var(--text-primary);
@@ -79,15 +97,17 @@ button.small {
 }
 
 .history-item-meta {
-    font-size: 0.75rem;
+    font-family: 'DM Mono', 'SF Mono', monospace;
+    font-size: 0.7rem;
     color: var(--text-muted);
-    margin-top: 2px;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
 }
 
 .history-item-delete {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
     padding: 0;
     display: flex;
     align-items: center;
@@ -103,6 +123,7 @@ button.small {
 }
 
 .history-item-delete:hover {
-    background: var(--error-50);
-    color: var(--error-500);
+    background: var(--error-500);
+    color: white;
+    transform: scale(1.1);
 }

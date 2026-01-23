@@ -1,6 +1,6 @@
-/* ===== Buttons ===== */
+/* ===== Buttons - Solid Colors, Strong Hover States ===== */
 button {
-    font-family: inherit;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
     padding: var(--space-3) var(--space-5);
@@ -16,7 +16,7 @@ button {
 }
 
 button:focus-visible {
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.3);
 }
 
 .button-row {
@@ -44,7 +44,7 @@ button:focus-visible {
     justify-content: center;
     gap: var(--space-2);
     cursor: pointer;
-    font-family: inherit;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
     padding: var(--space-3) var(--space-5);
@@ -56,22 +56,22 @@ button:focus-visible {
 }
 
 .file-input-label:hover {
-    background: var(--gray-50);
+    background: var(--gray-100);
     border-color: var(--gray-300);
     color: var(--text-primary);
 }
 
-/* Primary Button */
+/* Primary Button - Solid Dark with Accent Hover */
 .primary {
-    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    background: var(--gray-900);
     color: var(--text-inverse);
-    box-shadow: var(--shadow-sm), 0 2px 8px rgba(99, 102, 241, 0.25);
+    box-shadow: var(--shadow-sm);
 }
 
 .primary:hover {
-    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
-    box-shadow: var(--shadow-md), 0 4px 12px rgba(99, 102, 241, 0.35);
-    transform: translateY(-1px);
+    background: var(--accent);
+    box-shadow: var(--shadow-md), var(--shadow-accent);
+    transform: translateY(-2px);
 }
 
 .primary:active {
@@ -79,7 +79,7 @@ button:focus-visible {
     box-shadow: var(--shadow-sm);
 }
 
-/* Secondary Button */
+/* Secondary Button - Solid with Subtle Background */
 .secondary {
     background: var(--gray-800);
     color: var(--text-inverse);
@@ -87,7 +87,7 @@ button:focus-visible {
 }
 
 .secondary:hover {
-    background: var(--gray-900);
+    background: var(--gray-700);
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
 }
@@ -96,21 +96,25 @@ button:focus-visible {
     transform: translateY(0);
 }
 
-/* Ghost Button */
+/* Ghost Button - Outline Style with Fill on Hover */
 .ghost {
     background: transparent;
     color: var(--text-secondary);
-    border: 1.5px solid var(--border-light);
+    border: 1.5px solid var(--border-medium);
 }
 
 .ghost:hover {
-    background: var(--gray-50);
-    border-color: var(--gray-300);
-    color: var(--text-primary);
-    transform: none;
-    box-shadow: none;
+    background: var(--gray-900);
+    border-color: var(--gray-900);
+    color: var(--text-inverse);
 }
 
 .ghost:active {
-    background: var(--gray-100);
+    background: var(--gray-800);
+}
+
+/* Small variant for ghost buttons */
+.ghost.small {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.75rem;
 }
