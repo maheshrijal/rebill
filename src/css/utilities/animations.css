@@ -70,16 +70,15 @@
 
 /* ===== Staggered Form Block Entry ===== */
 .form-block {
-    opacity: 0;
-    animation: fadeInUp 0.4s var(--ease-out-expo) forwards;
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.form-block:nth-child(1) { animation-delay: var(--stagger-1); }
-.form-block:nth-child(2) { animation-delay: var(--stagger-2); }
-.form-block:nth-child(3) { animation-delay: var(--stagger-3); }
-.form-block:nth-child(4) { animation-delay: var(--stagger-4); }
-.form-block:nth-child(5) { animation-delay: var(--stagger-5); }
-.form-block:nth-child(6) { animation-delay: var(--stagger-6); }
+.form-block:nth-child(1) { animation-delay: 0.1s; }
+.form-block:nth-child(2) { animation-delay: 0.15s; }
+.form-block:nth-child(3) { animation-delay: 0.2s; }
+.form-block:nth-child(4) { animation-delay: 0.25s; }
+.form-block:nth-child(5) { animation-delay: 0.3s; }
+.form-block:nth-child(6) { animation-delay: 0.35s; }
 .form-block:nth-child(7) { animation-delay: 0.4s; }
 .form-block:nth-child(8) { animation-delay: 0.45s; }
 
