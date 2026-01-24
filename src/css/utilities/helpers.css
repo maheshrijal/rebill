@@ -1,5 +1,26 @@
 /* ===== Helpers ===== */
 
+/* ===== Skip Link for Accessibility ===== */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-600);
+    color: var(--text-inverse);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    z-index: 10000;
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: var(--space-4);
+}
+
 /* ===== Open Source Badge ===== */
 .open-source-badge {
     font-size: 0.6rem;
@@ -11,7 +32,9 @@
     text-decoration: none;
     margin-left: var(--space-2);
     vertical-align: middle;
-    transition: all var(--transition-fast);
+    transition: 
+        background-color var(--transition-fast),
+        color var(--transition-fast);
 }
 
 .open-source-badge:hover {
@@ -19,15 +42,20 @@
     color: var(--primary-700);
 }
 
-/* ===== Focus visible for accessibility ===== */
-:focus-visible {
-    outline: 2px solid var(--primary-400);
+.open-source-badge:focus-visible {
+    outline: 2px solid var(--primary-500);
     outline-offset: 2px;
 }
 
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-button:focus-visible {
-    outline: none;
+/* ===== Visually Hidden (for screen readers) ===== */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }

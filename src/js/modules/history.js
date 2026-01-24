@@ -101,7 +101,7 @@ export function renderHistoryList() {
     if (history.length === 0) {
         const empty = document.createElement('p');
         empty.className = 'history-empty';
-        empty.textContent = 'No saved invoices yet';
+        empty.textContent = 'No saved invoices yet…';
         list.appendChild(empty);
         return;
     }
@@ -110,6 +110,9 @@ export function renderHistoryList() {
         const item = document.createElement('div');
         item.className = 'history-item';
         item.dataset.id = entry.id;
+        item.setAttribute('role', 'button');
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('aria-label', `Load invoice #${entry.number} for ${entry.customerName || 'Unknown'}`);
 
         const info = document.createElement('div');
         info.className = 'history-item-info';
@@ -129,7 +132,7 @@ export function renderHistoryList() {
         deleteBtn.type = 'button';
         deleteBtn.className = 'history-item-delete';
         deleteBtn.dataset.id = entry.id;
-        deleteBtn.title = 'Delete';
+        deleteBtn.setAttribute('aria-label', `Delete invoice #${entry.number}`);
         deleteBtn.textContent = '×';
 
         item.appendChild(info);

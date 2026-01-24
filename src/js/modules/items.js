@@ -60,7 +60,7 @@ export function addItemRow(item = {}) {
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
     removeBtn.className = 'remove-item';
-    removeBtn.title = 'Remove item';
+    removeBtn.setAttribute('aria-label', 'Remove line item');
     removeBtn.textContent = '×';
 
     row.appendChild(descInput);

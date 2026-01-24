@@ -20,7 +20,7 @@
 }
 
 .placeholder-content h3 {
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
@@ -43,7 +43,7 @@
     padding: var(--space-10);
     height: 100vh;
     overflow-y: auto;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

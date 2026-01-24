@@ -1,0 +1,8 @@
+# Robots.txt for Rebill
+# https://rebill.mrjl.dev
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://rebill.mrjl.dev/sitemap.xml

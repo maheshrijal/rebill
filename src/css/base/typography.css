@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 
 body {
-    font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
     font-size: 14px;
     line-height: 1.6;
     color: var(--text-primary);
@@ -15,5 +15,18 @@ h3,
 h4,
 h5,
 h6 {
+    font-family: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
     color: var(--text-primary);
+    text-wrap: balance;
+}
+
+/* Tabular numbers for invoice amounts */
+.invoice-table td,
+.totals-preview span,
+.item-total,
+#displayBalanceDue,
+#displaySubtotal,
+#displayTaxAmount,
+#displayDiscount {
+    font-variant-numeric: tabular-nums;
 }

@@ -224,7 +224,9 @@ function attachEventHandlers() {
         renderHistoryList();
     });
 
-    document.getElementById('historyList').addEventListener('click', (e) => {
+    const historyList = document.getElementById('historyList');
+    
+    historyList.addEventListener('click', (e) => {
         const deleteBtn = e.target.closest('.history-item-delete');
         if (deleteBtn) {
             e.stopPropagation();
@@ -236,6 +238,18 @@ function attachEventHandlers() {
 
         const item = e.target.closest('.history-item');
         if (item) {
+            const id = parseInt(item.dataset.id, 10);
+            loadFromHistory(id);
+        }
+    });
+
+    // Keyboard support for history items (they have role="button")
+    historyList.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        
+        const item = e.target.closest('.history-item');
+        if (item && !e.target.closest('.history-item-delete')) {
+            e.preventDefault();
             const id = parseInt(item.dataset.id, 10);
             loadFromHistory(id);
         }
@@ -275,10 +289,12 @@ function init() {
     syncFromForm({ render: false, showInvoice: false });
 }
 
-// Expose functions to global scope for onclick handlers in HTML
-window.generateBill = generateBill;
-window.downloadPDF = downloadPDF;
-window.shareInvoice = shareInvoice;
-
 // Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    
+    // Attach button handlers (moved from inline onclick)
+    document.getElementById('generateBillBtn').addEventListener('click', generateBill);
+    document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
+    document.getElementById('shareBtn').addEventListener('click', shareInvoice);
+});

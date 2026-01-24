@@ -11,12 +11,20 @@ button {
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    transition: all var(--transition-base);
-    outline: none;
+    transition: 
+        background-color var(--transition-base),
+        border-color var(--transition-base),
+        box-shadow var(--transition-base),
+        transform var(--transition-base),
+        color var(--transition-base);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button:focus-visible {
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
 }
 
 .button-row {
@@ -52,7 +60,15 @@ button:focus-visible {
     color: var(--text-secondary);
     border: 1.5px solid var(--border-light);
     border-radius: var(--radius-md);
-    transition: all var(--transition-base);
+    transition: 
+        background-color var(--transition-base),
+        border-color var(--transition-base),
+        color var(--transition-base);
+}
+
+.file-input-label:focus-within {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 
 .file-input-label:hover {
