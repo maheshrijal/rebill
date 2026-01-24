@@ -91,7 +91,7 @@ button:focus-visible {
 }
 
 .primary:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
     box-shadow: var(--shadow-sm);
 }
 
@@ -109,7 +109,7 @@ button:focus-visible {
 }
 
 .secondary:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
 }
 
 /* Ghost Button */
@@ -129,4 +129,5 @@ button:focus-visible {
 
 .ghost:active {
     background: var(--gray-100);
+    transform: scale(0.98);
 }

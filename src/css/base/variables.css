@@ -81,4 +81,16 @@
     --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Stagger delays for orchestrated animations */
+    --stagger-1: 0.1s;
+    --stagger-2: 0.15s;
+    --stagger-3: 0.2s;
+    --stagger-4: 0.25s;
+    --stagger-5: 0.3s;
+    --stagger-6: 0.35s;
+
+    /* Primary color as RGB for alpha usage */
+    --primary-rgb: 99, 102, 241;
 }

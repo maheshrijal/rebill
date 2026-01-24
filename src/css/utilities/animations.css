@@ -1,14 +1,103 @@
-/* ===== Animations ===== */
+/* ===== Keyframe Animations ===== */
+
+/* Slide in from left (form section) */
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide in from right (invoice preview) */
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Fade up for content blocks */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(12px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Scale in for panels/modals */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Focus ring pulse */
+@keyframes focusRingPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4);
+    }
+    100% {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+    }
+}
+
+/* ===== Page Entry Orchestration ===== */
+.form-section {
+    animation: slideInFromLeft 0.5s var(--ease-out-expo) forwards;
+}
+
+.invoice-section,
+.invoice-placeholder {
+    animation: slideInFromRight 0.5s var(--ease-out-expo) 0.08s backwards;
+}
+
+/* ===== Staggered Form Block Entry ===== */
+.form-block {
+    opacity: 0;
+    animation: fadeInUp 0.4s var(--ease-out-expo) forwards;
+}
+
+.form-block:nth-child(1) { animation-delay: var(--stagger-1); }
+.form-block:nth-child(2) { animation-delay: var(--stagger-2); }
+.form-block:nth-child(3) { animation-delay: var(--stagger-3); }
+.form-block:nth-child(4) { animation-delay: var(--stagger-4); }
+.form-block:nth-child(5) { animation-delay: var(--stagger-5); }
+.form-block:nth-child(6) { animation-delay: var(--stagger-6); }
+.form-block:nth-child(7) { animation-delay: 0.4s; }
+.form-block:nth-child(8) { animation-delay: 0.45s; }
+
+/* ===== Line Item Entry Animation ===== */
+.item-row {
+    animation: fadeInUp 0.25s var(--ease-out-expo) forwards;
+}
+
+/* ===== History Panel Animation ===== */
+.history-panel {
+    animation: scaleIn 0.25s var(--ease-out-expo) forwards;
+}
+
+/* ===== Focus Ring Animation ===== */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    animation: focusRingPulse 0.2s ease-out forwards;
 }
 
 /* Respect reduced motion preferences */
@@ -20,5 +109,9 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+    
+    .form-block {
+        opacity: 1;
     }
 }

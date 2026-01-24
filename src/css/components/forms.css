@@ -193,9 +193,17 @@
     grid-template-columns: 2fr 0.7fr 1fr 1fr 40px;
     gap: var(--space-3);
     align-items: center;
-    padding: var(--space-2) 0;
+    padding: var(--space-2) var(--space-1);
     margin-bottom: var(--space-2);
-    animation: fadeInUp var(--transition-fast) ease-out;
+    border-radius: var(--radius-sm);
+    transition: 
+        transform var(--transition-fast),
+        background-color var(--transition-fast);
+}
+
+.item-row:hover {
+    transform: translateX(4px);
+    background: var(--gray-50);
 }
 
 .item-row input {
