@@ -52,11 +52,11 @@
 }
 
 /* ===== Form Blocks ===== */
+/* Animation is handled in utilities/animations.css for orchestrated staggered entry */
 .form-block {
     padding-bottom: var(--space-5);
     margin-bottom: var(--space-5);
     border-bottom: 1px solid var(--gray-100);
-    animation: fadeInUp var(--transition-slow) ease-out;
 }
 
 .form-block:last-of-type {
