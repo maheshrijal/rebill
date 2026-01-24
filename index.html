@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7ff">
 
     <!-- SEO Meta Tags -->
-    <title>Rebill - Invoice Generator</title>
+    <title>Rebill - Free Invoice Generator | Create PDF Invoices Online</title>
     <meta name="description"
         content="Create professional invoices for free. Open-source, privacy-first invoice generator with PDF export, auto-save, and no sign-up required.">
     <meta name="keywords" content="invoice generator, free invoice, bill maker, PDF invoice, open source invoicing">
@@ -16,35 +17,99 @@
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rebill.mrjl.dev/">
-    <meta property="og:title" content="Rebill - Invoice Generator">
+    <meta property="og:title" content="Rebill - Free Invoice Generator | Create PDF Invoices Online">
     <meta property="og:description"
         content="Create professional invoices for free. Open-source, privacy-first, no sign-up required.">
     <meta property="og:site_name" content="Rebill">
+    <meta property="og:image" content="https://rebill.mrjl.dev/src/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Rebill - Free Invoice Generator with PDF Export">
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Rebill - Invoice Generator">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rebill - Free Invoice Generator">
     <meta name="twitter:description"
         content="Create professional invoices for free. Open-source, privacy-first, no sign-up required.">
+    <meta name="twitter:image" content="https://rebill.mrjl.dev/src/assets/og-image.png">
+    <meta name="twitter:image:alt" content="Rebill - Free Invoice Generator with PDF Export">
+
+    <!-- Structured Data: SoftwareApplication Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Rebill",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "description": "Free, open-source invoice generator. Create professional invoices with PDF export, auto-save, and complete privacy - no sign-up required.",
+        "url": "https://rebill.mrjl.dev/",
+        "author": {
+            "@type": "Person",
+            "name": "Mahesh Rijal"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "ratingCount": "1"
+        },
+        "featureList": [
+            "PDF Invoice Export",
+            "Auto-save drafts",
+            "JSON import/export",
+            "Multiple currency support",
+            "Tax and discount calculations",
+            "100% client-side processing",
+            "No sign-up required"
+        ]
+    }
+    </script>
+
+    <!-- Structured Data: WebApplication Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Rebill Invoice Generator",
+        "url": "https://rebill.mrjl.dev/",
+        "browserRequirements": "Requires JavaScript. Works on all modern browsers.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any"
+    }
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧾%3C/text%3E%3C/svg%3E">
 
+    <!-- Performance: Preconnect & Preload -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Styles & Scripts -->
     <link rel="stylesheet" href="src/css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js"></script>
     <script type="module" src="src/js/main.js"></script>
 </head>
 
 <body>
-    <div class="container">
+    <a href="#billForm" class="skip-link">Skip to main content</a>
+    <header class="visually-hidden">
+        <h1>Rebill - Free Online Invoice Generator</h1>
+    </header>
+    <main class="container">
         <div class="form-section">
             <div class="header-row">
                 <h2>Rebill - Invoice Generator <a href="https://github.com/maheshrijal/rebill" target="_blank"
                         rel="noopener" class="open-source-badge">Open Source</a></h2>
-                <button type="button" id="historyToggle" class="ghost">📋 History</button>
+                <button type="button" id="historyToggle" class="ghost" aria-label="Toggle invoice history panel"><span aria-hidden="true">📋</span> History</button>
             </div>
             <div id="historyPanel" class="history-panel" style="display: none;">
                 <div class="history-header">
@@ -52,7 +117,7 @@
                     <button type="button" id="clearHistoryBtn" class="ghost small">Clear All</button>
                 </div>
                 <div id="historyList" class="history-list">
-                    <p class="history-empty">No invoices saved yet. Generate a bill to save it here.</p>
+                    <p class="history-empty">No invoices saved yet. Generate a bill to save it here…</p>
                 </div>
             </div>
             <form id="billForm" autocomplete="off">
@@ -61,20 +126,20 @@
                     <div class="form-grid">
                         <div class="form-group span-2">
                             <label for="sellerName">Seller Name</label>
-                            <input type="text" id="sellerName" value="" placeholder="Your Business Name" required>
+                            <input type="text" id="sellerName" value="" placeholder="Your Business Name…" required autocomplete="organization">
                         </div>
                         <div class="form-group span-2">
                             <label for="sellerAddress">Seller Address</label>
-                            <textarea id="sellerAddress" rows="3" placeholder="123 Business Street&#10;City, State ZIP"
-                                required></textarea>
+                            <textarea id="sellerAddress" rows="3" placeholder="123 Business Street&#10;City, State ZIP…"
+                                required autocomplete="street-address"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="sellerEmail">Seller Email</label>
-                            <input type="email" id="sellerEmail" value="" placeholder="you@example.com">
+                            <input type="email" id="sellerEmail" value="" placeholder="you@example.com" autocomplete="email" spellcheck="false">
                         </div>
                         <div class="form-group">
                             <label for="sellerPhone">Seller Phone</label>
-                            <input type="text" id="sellerPhone" value="" placeholder="+1 234 567 8900">
+                            <input type="tel" id="sellerPhone" value="" placeholder="+1 234 567 8900" autocomplete="tel">
                         </div>
                     </div>
                 </div>
@@ -84,20 +149,20 @@
                     <div class="form-grid">
                         <div class="form-group span-2">
                             <label for="billToName">Customer Name</label>
-                            <input type="text" id="billToName" value="" placeholder="Customer or Company Name" required>
+                            <input type="text" id="billToName" value="" placeholder="Customer or Company Name…" required autocomplete="off">
                         </div>
                         <div class="form-group span-2">
                             <label for="billToAddress">Customer Address</label>
-                            <textarea id="billToAddress" rows="3" placeholder="456 Customer Ave&#10;City, State ZIP"
-                                required></textarea>
+                            <textarea id="billToAddress" rows="3" placeholder="456 Customer Ave&#10;City, State ZIP…"
+                                required autocomplete="off"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="billToEmail">Customer Email</label>
-                            <input type="email" id="billToEmail" value="" placeholder="customer@example.com">
+                            <input type="email" id="billToEmail" value="" placeholder="customer@example.com" autocomplete="off" spellcheck="false">
                         </div>
                         <div class="form-group">
                             <label for="billToPhone">Customer Phone</label>
-                            <input type="text" id="billToPhone" value="" placeholder="+1 987 654 3210">
+                            <input type="tel" id="billToPhone" value="" placeholder="+1 987 654 3210" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -120,9 +185,9 @@
                         <div class="form-group">
                             <label for="invoiceNumber">Invoice Number</label>
                             <div class="number-input-wrapper">
-                                <button type="button" class="number-btn decrement" id="decrementInvoice">−</button>
-                                <input type="text" id="invoiceNumber" value="18" required>
-                                <button type="button" class="number-btn increment" id="incrementInvoice">+</button>
+                                <button type="button" class="number-btn decrement" id="decrementInvoice" aria-label="Decrease invoice number">−</button>
+                                <input type="text" id="invoiceNumber" value="18" required aria-label="Invoice number">
+                                <button type="button" class="number-btn increment" id="incrementInvoice" aria-label="Increase invoice number">+</button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -149,7 +214,7 @@
                         <span></span>
                     </div>
                     <div id="itemsContainer"></div>
-                    <button type="button" id="addItemBtn" class="ghost">Add Line Item</button>
+                    <button type="button" id="addItemBtn" class="ghost" aria-label="Add new line item">+ Add Line Item</button>
                 </div>
 
                 <div class="form-block">
@@ -195,17 +260,15 @@
                         <button type="button" id="exportJsonBtn" class="ghost">Export JSON</button>
                         <button type="button" id="downloadJsonBtn" class="secondary">Download JSON</button>
                         <button type="button" id="importJsonBtn" class="secondary">Import JSON</button>
-                        <label for="importFile" class="file-input-label">📎 Choose File</label>
+                        <label for="importFile" class="file-input-label"><span aria-hidden="true">📎</span> Choose File</label>
                         <input type="file" id="importFile" accept="application/json" class="visually-hidden">
                     </div>
                 </div>
 
                 <div class="button-row">
-                    <button type="button" class="primary" onclick="generateBill()">Generate Bill</button>
-                    <button type="button" class="secondary" onclick="downloadPDF()" id="downloadBtn"
-                        style="display:none;">Download PDF</button>
-                    <button type="button" class="secondary" onclick="shareInvoice()" id="shareBtn"
-                        style="display:none;">📤 Share</button>
+                    <button type="button" class="primary" id="generateBillBtn">Generate Bill</button>
+                    <button type="button" class="secondary" id="downloadBtn" style="display:none;">Download PDF</button>
+                    <button type="button" class="secondary" id="shareBtn" style="display:none;" aria-label="Share invoice"><span aria-hidden="true">📤</span> Share</button>
                     <button type="button" class="ghost" id="resetDraftBtn">Reset Draft</button>
                 </div>
             </form>
@@ -213,7 +276,7 @@
 
         <div class="invoice-placeholder" id="invoicePlaceholder">
             <div class="placeholder-content">
-                <div class="placeholder-icon">📄</div>
+                <div class="placeholder-icon" aria-hidden="true">📄</div>
                 <h3>Invoice Preview</h3>
                 <p>Fill in the form on the left and click <strong>Generate Bill</strong> to see your invoice here.</p>
             </div>
@@ -278,7 +341,7 @@
                 <p id="displayInstructions"></p>
             </div>
         </div>
-    </div>
+    </main>
 </body>
 
 </html>

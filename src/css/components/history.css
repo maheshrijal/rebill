@@ -52,7 +52,14 @@ button.small {
     border-radius: var(--radius-sm);
     margin-bottom: var(--space-2);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: 
+        border-color var(--transition-fast),
+        background-color var(--transition-fast);
+}
+
+.history-item:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 
 .history-item:hover {
@@ -98,11 +105,18 @@ button.small {
     border-radius: var(--radius-sm);
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: 
+        background-color var(--transition-fast),
+        color var(--transition-fast);
     margin-left: var(--space-2);
 }
 
 .history-item-delete:hover {
     background: var(--error-50);
     color: var(--error-500);
+}
+
+.history-item-delete:focus-visible {
+    outline: 2px solid var(--error-500);
+    outline-offset: 1px;
 }
