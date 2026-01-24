@@ -53,6 +53,7 @@ button.small {
     margin-bottom: var(--space-2);
     cursor: pointer;
     transition: 
+        transform var(--transition-fast),
         border-color var(--transition-fast),
         background-color var(--transition-fast);
 }
@@ -63,6 +64,7 @@ button.small {
 }
 
 .history-item:hover {
+    transform: translateX(4px);
     border-color: var(--primary-300);
     background: var(--primary-50);
 }

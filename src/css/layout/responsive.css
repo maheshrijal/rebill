@@ -239,6 +239,8 @@
     * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        animation: none !important;
+        transition: none !important;
     }
 
     html,
@@ -247,6 +249,11 @@
         margin: 0 !important;
         padding: 0 !important;
         font-size: 12px !important;
+    }
+
+    /* Hide noise texture in print */
+    body::before {
+        display: none !important;
     }
 
     .container {
@@ -258,11 +265,14 @@
         gap: 0 !important;
     }
 
-    .form-section {
+    .form-section,
+    .invoice-placeholder,
+    .skip-link {
         display: none !important;
     }
 
     .invoice-section {
+        display: block !important;
         box-shadow: none !important;
         padding: 20px !important;
         margin: 0 !important;
@@ -320,6 +330,19 @@
     .invoice-totals {
         margin-bottom: 30px !important;
         font-size: 11px !important;
+    }
+
+    /* Preserve dark total row in print */
+    .total-row {
+        background: #1f2937 !important;
+        color: white !important;
+        padding: 8px 12px !important;
+        border-radius: 4px !important;
+    }
+
+    .total-row .total-label,
+    .total-row .total-amount {
+        color: white !important;
     }
 
     .balance-due h2 {
