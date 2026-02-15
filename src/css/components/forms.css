@@ -51,6 +51,14 @@
     border-radius: var(--radius-full);
 }
 
+.app-intro {
+    margin: calc(var(--space-4) * -1) 0 var(--space-6);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    max-width: 72ch;
+}
+
 /* ===== Form Blocks ===== */
 /* Animation is handled in utilities/animations.css for orchestrated staggered entry */
 .form-block {
