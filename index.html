@@ -7,10 +7,11 @@
     <meta name="theme-color" content="#f5f7ff">
 
     <!-- SEO Meta Tags -->
-    <title>Rebill - Free Invoice Generator | Create PDF Invoices Online</title>
+    <title>Free Invoice Generator - Create PDF Invoices Online | Rebill</title>
     <meta name="description"
-        content="Create professional invoices for free. Open-source, privacy-first invoice generator with PDF export, auto-save, and no sign-up required.">
-    <meta name="keywords" content="invoice generator, free invoice, bill maker, PDF invoice, open source invoicing">
+        content="Create, preview, and download professional PDF invoices for free. Open-source invoice generator with auto-save, JSON import/export, and no signup.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="application-name" content="Rebill">
     <meta name="author" content="Mahesh Rijal">
     <link rel="canonical" href="https://rebill.mrjl.dev/">
 
@@ -21,7 +22,10 @@
     <meta property="og:description"
         content="Create professional invoices for free. Open-source, privacy-first, no sign-up required.">
     <meta property="og:site_name" content="Rebill">
+    <meta property="og:locale" content="en_US">
     <meta property="og:image" content="https://rebill.mrjl.dev/src/assets/og-image.png">
+    <meta property="og:image:secure_url" content="https://rebill.mrjl.dev/src/assets/og-image.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Rebill - Free Invoice Generator with PDF Export">
@@ -31,6 +35,7 @@
     <meta name="twitter:title" content="Rebill - Free Invoice Generator">
     <meta name="twitter:description"
         content="Create professional invoices for free. Open-source, privacy-first, no sign-up required.">
+    <meta name="twitter:url" content="https://rebill.mrjl.dev/">
     <meta name="twitter:image" content="https://rebill.mrjl.dev/src/assets/og-image.png">
     <meta name="twitter:image:alt" content="Rebill - Free Invoice Generator with PDF Export">
 
@@ -40,8 +45,11 @@
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "Rebill",
+        "headline": "Rebill Invoice Generator",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
+        "isAccessibleForFree": true,
+        "softwareVersion": "1.0.0",
         "offers": {
             "@type": "Offer",
             "price": "0",
@@ -49,14 +57,13 @@
         },
         "description": "Free, open-source invoice generator. Create professional invoices with PDF export, auto-save, and complete privacy - no sign-up required.",
         "url": "https://rebill.mrjl.dev/",
+        "image": "https://rebill.mrjl.dev/src/assets/og-image.png",
+        "sameAs": [
+            "https://github.com/maheshrijal/rebill"
+        ],
         "author": {
             "@type": "Person",
             "name": "Mahesh Rijal"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5",
-            "ratingCount": "1"
         },
         "featureList": [
             "PDF Invoice Export",
@@ -74,12 +81,11 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Rebill Invoice Generator",
+        "@type": "WebSite",
+        "name": "Rebill",
         "url": "https://rebill.mrjl.dev/",
-        "browserRequirements": "Requires JavaScript. Works on all modern browsers.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Any"
+        "description": "Free online invoice generator with PDF export.",
+        "inLanguage": "en"
     }
     </script>
 
@@ -111,6 +117,7 @@
                         rel="noopener" class="open-source-badge">Open Source</a></h2>
                 <button type="button" id="historyToggle" class="ghost" aria-label="Toggle invoice history panel"><span aria-hidden="true">📋</span> History</button>
             </div>
+            <p class="app-intro">Rebill helps freelancers and small teams create clear, professional invoices online. Add line items, taxes, discounts, and export a print-ready PDF invoice in minutes.</p>
             <div id="historyPanel" class="history-panel" style="display: none;">
                 <div class="history-header">
                     <h3>Invoice History</h3>
