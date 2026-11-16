@@ -23,7 +23,7 @@ import {
     syncFromForm,
     applyDataToForm
 } from './modules/form.js';
-import { downloadPDF, shareInvoice } from './modules/pdf.js';
+import { downloadPDF, shareInvoice, preloadPdfRenderer } from './modules/pdf.js';
 import {
     exportJsonToTextarea,
     downloadJsonFile,
@@ -49,6 +49,7 @@ function generateBill() {
     data.meta.showInvoice = true;
     saveDraft(data);
     renderInvoice(data);
+    preloadPdfRenderer();
     localStorage.setItem(LAST_NUMBER_KEY, data.invoice.number);
     saveToHistory(data);
     document.getElementById('invoice').scrollIntoView({ behavior: 'smooth' });
@@ -276,6 +277,7 @@ function init() {
         isApplyingData = false;
         if (storedDraft.meta?.showInvoice) {
             renderInvoice(storedDraft);
+            preloadPdfRenderer();
         }
         return;
     }

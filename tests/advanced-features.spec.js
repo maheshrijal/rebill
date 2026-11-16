@@ -111,8 +111,7 @@ test.describe('Advanced Invoice Features', () => {
         const pdfBuffer = fs.readFileSync(path);
         const data = await pdfParse(pdfBuffer);
 
-        expect(data.text).toContain('Due Date:');
-        expect(data.text).toContain('31/12/2025');
+        expect(data.text).toContain('Due by 31/12/2025');
     });
 
     test('should hide due date if not provided', async ({ page }) => {
@@ -134,7 +133,7 @@ test.describe('Advanced Invoice Features', () => {
         const pdfBuffer = fs.readFileSync(path);
         const data = await pdfParse(pdfBuffer);
 
-        expect(data.text).not.toContain('Due Date:');
+        expect(data.text).not.toContain('Due by');
     });
 
     test('should display correctly with different currency', async ({ page }) => {

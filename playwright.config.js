@@ -56,9 +56,9 @@ export default defineConfig({
 
     /* Run your local dev server before starting the tests */
     webServer: {
-        command: 'python3 -m http.server 8080',
+        command: 'npm run build && npm run preview -- --port 8080 --strictPort',
         url: 'http://localhost:8080',
         reuseExistingServer: !process.env.CI,
-        timeout: 10000,
+        timeout: 120000,
     },
 });
