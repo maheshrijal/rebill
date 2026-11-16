@@ -1,14 +1,16 @@
-.PHONY: dev serve test test-report
+.PHONY: dev build preview test test-report
 
-# Start a local development server on port 3000
+# Start the Vite dev server
 dev:
-	@echo "Starting dev server at http://localhost:3000"
-	@npx -y serve -l 3000 .
+	@npm run dev
 
-# Alternative using Python (no npm required)
-serve:
-	@echo "Starting dev server at http://localhost:3000"
-	@python3 -m http.server 3000
+# Build the static site into dist/
+build:
+	@npm run build
+
+# Serve the production build locally
+preview:
+	@npm run preview
 
 # Run Playwright tests
 test:

@@ -20,14 +20,17 @@ A free, open-source invoice generator that runs entirely in your browser. No ser
 git clone https://github.com/maheshrijal/rebill.git
 cd rebill
 
-# Start dev server (requires Node.js)
-make dev
-
-# Or use Python
-make serve
+npm install
+npm run dev
 ```
 
-Open http://localhost:3000
+Open http://localhost:5173
+
+To build the static site into `dist/`:
+
+```bash
+npm run build
+```
 
 ## Usage
 
@@ -40,9 +43,8 @@ Your draft auto-saves as you type. Data persists in `localStorage`.
 
 ## Tech Stack
 
-- HTML5, CSS3, Vanilla JavaScript
-- jsPDF + html2canvas (PDF generation)
-- No frameworks, no build step
+- HTML5, CSS3, Vanilla JavaScript, built with Vite
+- PDFs made in the browser with [pdfcn](https://pdfcn.dev) React components rendered by [Takumi](https://takumi.kane.tw) (WebAssembly)
 
 ## License
 

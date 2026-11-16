@@ -4,7 +4,9 @@
     "description": "Open-source, privacy-first invoice generator",
     "type": "module",
     "scripts": {
-        "dev": "python3 -m http.server 8080",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
         "test": "playwright test",
         "test:ui": "playwright test --ui",
         "test:headed": "playwright test --headed",
@@ -20,6 +22,18 @@
     "license": "MIT",
     "devDependencies": {
         "@playwright/test": "^1.40.0",
-        "pdf-parse": "^1.1.1"
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@vitejs/plugin-react": "^6.3.0",
+        "pdf-parse": "^1.1.1",
+        "typescript": "^7.0.2",
+        "vite": "^8.3.8"
+    },
+    "dependencies": {
+        "@fontsource/mukta": "^5.3.0",
+        "@takumi-rs/helpers": "^2.20.0",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
+        "takumi-pdf": "^0.20.0"
     }
 }

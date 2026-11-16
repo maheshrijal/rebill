@@ -200,10 +200,10 @@ test.describe('PDF Generation', () => {
         const data = await pdfParse(pdfBuffer);
 
         // Verify Content
-        expect(data.text).toContain('DESCRIPTION');
-        expect(data.text).toContain('QTY');
-        expect(data.text).toContain('UNIT PRICE');
-        expect(data.text).toContain('TOTAL');
+        expect(data.text).toContain('Description');
+        expect(data.text).toContain('Qty');
+        expect(data.text).toContain('Unit price');
+        expect(data.text).toContain('Amount due');
         expect(data.text).toContain(testData.items[0].description);
         expect(data.text).toContain(testData.seller.name);
         expect(data.text).toContain("Total");
